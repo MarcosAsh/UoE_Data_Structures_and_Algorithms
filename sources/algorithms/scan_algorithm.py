@@ -1,23 +1,12 @@
 # quick sort for scan algorithm
-def partition(arr, low, high):
-    pivot = arr[high]
-    i = low - 1
-    for j in range(low, high):
-        if arr[j] <= pivot:
-            i = i + 1
-            swap(arr, i, j)
-    swap(low, i, high)
-    return i + 1
-
-def swap(arr, i, j):
-    arr[i], arr[j] = arr[j], arr[i]
-
-def quickSort(arr, low, high):
-    if low < high:
-        p = partition(arr, low, high)
-        quickSort(arr, low, p - 1)
-        quickSort(arr, p + 1, high)
-
+def quicksort(arr):
+    if len(arr) <= 1:
+        pivot = arr[len(arr) // 2]
+        left = [x for x in arr if x < pivot]
+        middle = [x for x in arr if x == pivot]
+        right = [x for x in arr if x > pivot]
+        return quicksort(left) + middle + quicksort(right)
+    
 # scan algorithm
 
 size = 8
@@ -42,9 +31,8 @@ def scan(arr, head, direction):
             right.append(arr[i])
 
     # sorting right and left vectors
-    # To-do implement better algorithm for sorting
-    quickSort(left, 0, len(left))
-    quickSort(right, 0, len(right))
+    quicksort(left)
+    quicksort(right)
 
     run = 2
     while (run != 0):
@@ -70,10 +58,9 @@ def scan(arr, head, direction):
     for i in range(len(seek_sequence)):
         print(seek_sequence[i])
 
-arr = [ 176, 79, 34, 60,
-         92, 11, 41, 114 ]
+# test code
+arr = [ 176, 79, 34, 60, 92, 11, 41, 114 ]
 head = 50
 direction = "left"
 
 scan(arr, head, direction)
-

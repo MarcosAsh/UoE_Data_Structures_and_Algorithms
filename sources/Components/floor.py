@@ -40,6 +40,3 @@ class Floor:
         Sets the number of people on the floor to the number of people classes in the list
         """
         self.__number_people = len(self.__people_list)
- 
-FloorOne = Floor(10)
-print(FloorOne.GetNumPeople())

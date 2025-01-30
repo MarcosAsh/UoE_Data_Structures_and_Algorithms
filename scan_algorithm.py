@@ -76,5 +76,3 @@ head = 50
 direction = "left"
 
 scan(arr, head, direction)
-
-print("HI")

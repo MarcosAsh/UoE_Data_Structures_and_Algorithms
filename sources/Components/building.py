@@ -16,6 +16,6 @@ class building:
             self.__people.append(newPerson)
 
     def __createFloors(self) -> None:
-        for i in range(numOfFloors):
+        for i in range(self.__numOfFloors):
             self.__floors.append(Floor(i))
     

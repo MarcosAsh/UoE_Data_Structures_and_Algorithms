@@ -14,13 +14,14 @@ def look_algorithm(floors, requests, current_floor, direction):
     direction is either 1 or -1, 1 for up and -1 for down
     returns the current floor 
     """
+    requests = quicksort(requests)
     while requests:
-        requests = quicksort(requests)
         print(f"Current floor: {current_floor}")
         print(f"Requests: {requests}")
 
         if direction == 1: 
             next_requests = [req for req in requests if req >= current_floor]
+            print(next_requests)
             if next_requests:
                 next_floor = min(next_requests)
             else:
@@ -28,6 +29,7 @@ def look_algorithm(floors, requests, current_floor, direction):
                 continue
         else:
             next_requests = [req for req in requests if req >= current_floor]
+            print(next_requests)
             if next_requests:
                 next_floor = max(next_requests)
             else:
@@ -40,5 +42,5 @@ def look_algorithm(floors, requests, current_floor, direction):
 # test code
 requests = [0, 5, 3, 7, 9, 2]
 floors = 10
-final_floor = look_algorithm(floors, requests)
+final_floor = look_algorithm(floors, requests, 0, 1)
 print(f"Final Floor: {final_floor}")

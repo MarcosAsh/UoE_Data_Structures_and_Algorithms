@@ -77,3 +77,4 @@ direction = "left"
 
 scan(arr, head, direction)
 
+print("HI")

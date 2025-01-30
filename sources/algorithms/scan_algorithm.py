@@ -1,66 +1,63 @@
-# quick sort for scan algorithm
 def quicksort(arr):
     if len(arr) <= 1:
-        pivot = arr[len(arr) // 2]
-        left = [x for x in arr if x < pivot]
-        middle = [x for x in arr if x == pivot]
-        right = [x for x in arr if x > pivot]
-        return quicksort(left) + middle + quicksort(right)
-    
-# scan algorithm
+        return arr
+    pivot = arr[len(arr) // 2]
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+    return quicksort(left) + middle + quicksort(right)
 
-size = 8
-desk_size = 200
-
-def scan(arr, head, direction):
+def scan_algorithm(requests, head, direction, max_floor):
+    """
+    requests: List of requested floors.
+    head: Current floor of the lift.
+    direction: Initial direction of movement ('-1' for down or '1' for up).
+    max_floor: The highest floor in the building.
+    return: Tuple containing the total seek operations and the sequence of visited floors.
+    """
     seek_count = 0
-    distance, current_track = 0, 0
     left = []
     right = []
     seek_sequence = []
 
-    if direction == 'left':
+    if direction == -1:
         left.append(0)
-    elif direction == 'right':
-        right.append(0)
+    elif direction == 1:
+        right.append(max_floor)
 
-    for i in range(size):
-        if (arr[i] < head):
-            left.append(arr[i])
-        if (arr[i] > head):
-            right.append(arr[i])
+    for req in requests:
+        if req < head:
+            left.append(req)
+        elif req > head:
+            right.append(req)
 
-    # sorting right and left vectors
-    quicksort(left)
-    quicksort(right)
+    left = quicksort(left)
+    right = quicksort(right)
 
     run = 2
-    while (run != 0):
-        if (direction == 'left'):
-            for i in range(len(left) - 1, -1, -1):
-                current_track = left[i]
-                seek_sequence.append(current_track)
-                distance = abs(current_track - head)
-                seek_count += distance
-                head = current_track
-            direction = 'right'
-        elif (direction == 'right'):
-            for i in range(len(right)):
-                current_track = right[i]
-                seek_sequence.append(current_track)
-                distance = abs(current_track - head)
-                seek_count += distance
-                head = current_track
-            direction = 'left'
+    while run > 0:
+        if direction == -1:
+            for i in reversed(left):
+                seek_sequence.append(i)
+                seek_count += abs(head - i)
+                head = i
+            direction = 1
+        elif direction == 1:
+            for i in right:
+                seek_sequence.append(i)
+                seek_count += abs(head - i)
+                head = i
+            direction = -1
         run -= 1
-    print(f"Total number of seek operations = : {seek_count}")
-    print("Seek sequence is : ")
-    for i in range(len(seek_sequence)):
-        print(seek_sequence[i])
 
-# test code
-arr = [ 176, 79, 34, 60, 92, 11, 41, 114 ]
+    return seek_count, seek_sequence
+
+# Example usage:
+requests = [176, 79, 34, 60, 92, 11, 41, 114]
 head = 50
-direction = "left"
+direction = -1
+max_floor = 200
 
-scan(arr, head, direction)
+total_seek, sequence = scan_algorithm(requests, head, direction, max_floor)
+print(f"Total seek operations: {total_seek}")
+print("Seek sequence:", sequence)

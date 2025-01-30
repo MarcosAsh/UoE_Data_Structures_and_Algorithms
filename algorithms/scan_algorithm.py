@@ -77,4 +77,3 @@ direction = "left"
 
 scan(arr, head, direction)
 
-#test

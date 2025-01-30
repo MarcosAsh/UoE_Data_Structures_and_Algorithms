@@ -8,6 +8,12 @@ def quicksort(arr):
         return quicksort(left) + middle + quicksort(right)
     
 def look_algorithm(floors, requests, current_floor, direction):
+    """
+    Requests is an array of requests
+    current_floor is an int which isnt limited to the amount of floors 
+    direction is either 1 or -1, 1 for up and -1 for down
+    returns the current floor 
+    """
     while requests:
         requests = quicksort(requests)
         print(f"Current floor: {current_floor}")

@@ -1,19 +1,56 @@
+import sys
+import os
 import tkinter as tk
 import time
 import threading
+
+# Ensure the sources directory is in the Python path
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "Components")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "algorithms")))
+
 from Components.lift import lift
 from Components.building import building
 from Components.floor import Floor
 from Components.person import Person
 from algorithms.scan_algorithm import scan_algorithm_real_time
 
+def read_input_file(filename):
+    """Reads the input file and returns number of floors, lift capacity, and requests."""
+    num_floors = 0
+    lift_capacity = 0
+    requests = {}
+    
+    with open(filename, 'r') as file:
+        lines = file.readlines()
+        
+        # Read number of floors and lift capacity
+        for line in lines:
+            line = line.strip()
+            if line.startswith("#") or not line:
+                continue
+            if "," in line:
+                num_floors, lift_capacity = map(int, line.split(","))
+                break
+        
+        # Read floor requests
+        for line in lines:
+            line = line.strip()
+            if line.startswith("#") or not line:
+                continue
+            if ":" in line:
+                floor, destinations = line.split(":")
+                floor = int(floor.strip())
+                destinations = list(map(int, destinations.split(","))) if destinations.strip() else []
+                requests[floor] = destinations
+    
+    return num_floors, lift_capacity, requests
+
 class LiftSimulation:
-    def __init__(self, root, num_floors=10, lift_capacity=5):
+    def __init__(self, root, input_file="input.txt"):
         self.root = root
-        self.num_floors = num_floors
-        self.lift_capacity = lift_capacity
+        self.num_floors, self.lift_capacity, self.people_waiting = read_input_file(input_file)
         self.current_floor = 0
-        self.people_waiting = {i: [] for i in range(num_floors)}  # People waiting per floor
         self.people_in_lift = []
         
         self.canvas = tk.Canvas(root, width=400, height=500, bg="white")
@@ -60,14 +97,11 @@ class LiftSimulation:
 
     def start_simulation(self):
         """Run the lift using SCAN algorithm"""
-        requests = [2, 5, 8, 3, 7]  # Sample requests
+        my_building = building(self.num_floors, self.lift_capacity, self.people_waiting)
         my_lift = lift(current_floor=0, doors_open=False, moving=False, direction=1, capacity=self.lift_capacity)
 
-        # Add people to waiting list
-        for req in requests:
-            self.people_waiting[0].append(req)
-
         def run_lift():
+            requests = [dest for floor in self.people_waiting.values() for dest in floor]
             total_seek, seek_sequence = scan_algorithm_real_time(requests, my_lift.current_floor, my_lift.direction, self.num_floors)
 
             for floor in seek_sequence:
@@ -80,5 +114,5 @@ class LiftSimulation:
 if __name__ == "__main__":
     root = tk.Tk()
     root.title("Lift Simulation")
-    app = LiftSimulation(root)
+    app = LiftSimulation(root, input_file="input.txt")
     root.mainloop()

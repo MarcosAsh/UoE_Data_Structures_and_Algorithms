@@ -2,6 +2,7 @@
 
 from floor import *
 from person import *
+from lift import *
 class building:
     def __init__(self,floorsNum,liftCapacity,requests):
         self.__numOfFloors = floorsNum
@@ -19,3 +20,5 @@ class building:
         for i in range(self.__numOfFloors):
             self.__floors.append(Floor(i))
     
+    def __createLift(self) -> None:
+        self.__lift = Lift(0,False,False,1,self.__capacity)

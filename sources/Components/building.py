@@ -6,6 +6,9 @@ from lift import *
 
 class building:
     def __init__(self,floorsNum,liftCapacity,requests,currentLocations):
+        '''
+        Creates building. (int floorsNum, int liftCapacity, 2dArray requests, array currentLocations)
+        '''
         self.__numOfFloors = floorsNum
         self.__capacity = liftCapacity
         self.__requests = requests

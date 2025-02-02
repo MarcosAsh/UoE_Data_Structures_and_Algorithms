@@ -3,6 +3,7 @@
 from floor import *
 from person import *
 from lift import *
+
 class building:
     def __init__(self,floorsNum,liftCapacity,requests,currentLocations):
         self.__numOfFloors = floorsNum
@@ -26,8 +27,3 @@ class building:
     
     def __createLift(self) -> None:
         self.__lift = lift(0,False,False,1,self.__capacity)
-
-    def GetFloor(self,index) -> Floor:
-        return self.__floors[index]
-
-

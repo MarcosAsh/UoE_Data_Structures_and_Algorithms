@@ -21,4 +21,4 @@ class building:
             self.__floors.append(Floor(i))
     
     def __createLift(self) -> None:
-        self.__lift = Lift(0,False,False,1,self.__capacity)
+        self.__lift = lift(0,False,False,1,self.__capacity)

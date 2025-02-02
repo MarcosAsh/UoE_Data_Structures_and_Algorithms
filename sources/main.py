@@ -42,7 +42,7 @@ def read_input_file(filename):
                 floor, destinations = line.split(":")
                 floor = int(floor.strip())
                 destinations = list(map(int, destinations.split(","))) if destinations.strip() else []
-                requests[floor] = destinations
+                requests[floor - 1] = destinations
     
     return num_floors, lift_capacity, requests
 

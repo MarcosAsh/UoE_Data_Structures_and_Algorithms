@@ -9,10 +9,10 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "Components")))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "algorithms")))
 
-from Components.lift import lift
-from Components.building import building
-from Components.floor import Floor
-from Components.person import Person
+from components.lift import lift
+from components.building import building
+from components.floor import Floor
+from components.person import Person
 from algorithms.scan_algorithm import scan_algorithm_real_time
 
 def read_input_file(filename):

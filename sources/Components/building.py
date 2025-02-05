@@ -38,17 +38,8 @@ class building:
             self.__floors.append(Floor(i))
     
     def __createLift(self) -> None:
-<<<<<<< HEAD
-        self.__lift = lift(0,False,False,1,self.__capacity)
-
-    def GetFloor(self,index) -> Floor:
-        return self.__floors[index]
-
-
-=======
         '''
         Creates the lift
         '''
         self.__lift = lift(0,False,False,1,self.__capacity)
 
->>>>>>> d35f44cef730dd5bacf8e0e19e355e644b832921

@@ -114,5 +114,5 @@ class LiftSimulation:
 if __name__ == "__main__":
     root = tk.Tk()
     root.title("Lift Simulation")
-    app = LiftSimulation(root, input_file="input.txt")
+    app = LiftSimulation(root, input_file="sources/input.txt")
     root.mainloop()

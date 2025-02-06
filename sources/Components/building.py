@@ -25,7 +25,7 @@ class building:
         '''
         for i in self.__requests:
             currentFloor = self.GetFloor(i)
-            for j in i:
+            for j in self.__requests[i]:
                 newPerson = Person(j)
                 self.__people.append(newPerson)
                 currentFloor.AddToPeople(newPerson)
@@ -43,3 +43,8 @@ class building:
         '''
         self.__lift = lift(0,False,False,1,self.__capacity)
 
+    def GetFloor(self, i) -> list:
+        """
+        Returns floor at index i
+        """
+        return self.__floors[i]

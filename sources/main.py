@@ -79,10 +79,10 @@ class LiftSimulation:
         """Animate people entering/exiting the lift"""
         self.canvas.delete("people")
         
-        # People leaving the lift
+        # Removing anyone getting off at the current floor
         self.people_in_lift = [p for p in self.people_in_lift if p != target_floor]
         
-        # People entering the lift
+        # Adding anyone waiting on the floor until the capacity is met or there are no more people waiting
         if target_floor in self.people_waiting:
             while len(self.people_in_lift) < self.lift_capacity and self.people_waiting[target_floor]:
                 self.people_in_lift.append(self.people_waiting[target_floor].pop(0))

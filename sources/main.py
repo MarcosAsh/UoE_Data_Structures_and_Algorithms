@@ -47,9 +47,9 @@ def read_input_file(filename):
     return num_floors, lift_capacity, requests
 
 class LiftSimulation:
-    def __init__(self, root, input_file="input.txt"):
+    def __init__(self, root, input_file="sources/input.txt"):
         self.root = root
-        self.num_floors, self.lift_capacity, self.people_waiting = read_input_file(input_file)
+        self.num_floors, self.lift_capacity, self.requests = read_input_file(input_file)
         self.current_floor = 0
         self.people_in_lift = []
         
@@ -83,9 +83,9 @@ class LiftSimulation:
         self.people_in_lift = [p for p in self.people_in_lift if p != target_floor]
         
         # People entering the lift
-        if target_floor in self.people_waiting:
-            while len(self.people_in_lift) < self.lift_capacity and self.people_waiting[target_floor]:
-                self.people_in_lift.append(self.people_waiting[target_floor].pop(0))
+        if target_floor in self.requests:
+            while len(self.people_in_lift) < self.lift_capacity and self.requests[target_floor]:
+                self.people_in_lift.append(self.requests[target_floor].pop(0))
         
         # Draw people in lift
         for idx, _ in enumerate(self.people_in_lift):
@@ -97,13 +97,15 @@ class LiftSimulation:
 
     def start_simulation(self):
         """Run the lift using SCAN algorithm"""
-        my_building = building(self.num_floors, self.lift_capacity, self.people_waiting)
+        my_building = building(self.num_floors, self.lift_capacity, self.requests)
         my_lift = lift(current_floor=0, doors_open=False, moving=False, direction=1, capacity=self.lift_capacity)
 
         def run_lift():
-            requests = [dest for floor in self.people_waiting.values() for dest in floor]
+            requests = [dest for floor in self.requests.values() for dest in floor]
             total_seek, seek_sequence = scan_algorithm_real_time(requests, my_lift.current_floor, my_lift.direction, self.num_floors)
-
+            print("Total seek operations:", total_seek)
+            print("Seek sequence:", seek_sequence)
+            
             for floor in seek_sequence:
                 time.sleep(1)
                 self.update_lift_position(floor)

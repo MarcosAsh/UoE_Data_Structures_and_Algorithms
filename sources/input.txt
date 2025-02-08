@@ -1,5 +1,5 @@
 # Number of Floors, Capacity
-8, 5
+9, 5
 # Floor Requests
 1: 4, 6
 2: 3, 5, 7

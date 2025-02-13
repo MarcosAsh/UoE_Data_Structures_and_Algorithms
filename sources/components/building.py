@@ -11,7 +11,6 @@ class building:
         '''
         self.__numOfFloors = floorsNum
         self.__requests = requests
-        self.__people = []
         self.__floors = []
         self.__capacity = capacity
         self.__lift = lift(0, False, 1, self.__capacity)
@@ -25,8 +24,7 @@ class building:
         for i in self.__requests:
             currentFloor = self.GetFloor(i)
             for j in self.__requests[i]:
-                newPerson = Person(j)
-                self.__people.append(newPerson)
+                newPerson = j
                 currentFloor.AddToPeople(newPerson)
 
     def __createFloors(self) -> None:

@@ -1,7 +1,6 @@
 # building components
 
 from floor import *
-from person import *
 from lift import *
 
 class building:

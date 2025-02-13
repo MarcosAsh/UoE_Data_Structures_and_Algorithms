@@ -12,7 +12,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "algorit
 from components.lift import lift
 from components.building import building
 from components.floor import Floor
-from components.person import Person
 from algorithms.scan_algorithm import scan_algorithm_real_time
 
 

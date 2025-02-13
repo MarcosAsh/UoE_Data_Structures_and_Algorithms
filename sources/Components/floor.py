@@ -9,12 +9,14 @@ class Floor:
         Adds a target person class to the floor
         """
         self.__people_list.append(person)
+        self.__number_people += 1
 
     def RemoveFromPeople(self, person) -> None:
         """
         Removes a target person class from the floor
         """
         self.__people_list.remove(person)
+        self.__number_people -= 1
 
     def GetNumPeople(self) -> list:
         """

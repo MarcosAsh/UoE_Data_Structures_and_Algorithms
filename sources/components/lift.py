@@ -7,6 +7,7 @@ class lift:
         self.__direction = direction
         self.__capacity = capacity
         self.__num_people = 0
+        self.peopleList = []
 
     def move_up(self) -> None:
         '''
@@ -52,11 +53,12 @@ class lift:
         '''
         return self.__current_floor
     
-    def add_people(self) -> None:
+    def add_people(self,request) -> None:
         '''
         add a person to the lift + 1
         '''
         self.__capacity += 1
+        self.peopleList.append(request)
 
     def get_num_people(self) -> int:
         '''

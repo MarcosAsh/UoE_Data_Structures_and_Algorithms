@@ -36,9 +36,8 @@ class building:
         for i in range(self.__numOfFloors):
             self.__floors.append(Floor(i))
     
-
-    def GetFloor(self, i) -> Floor:
-        """
-        Returns floor at index i
-        """
-        return self.__floors[i]
+    # def __createLift(self) -> None:
+    #     '''
+    #     Creates the lift
+    #     '''
+    #     self.__lift = lift(0,False,False,1,self.__capacity)

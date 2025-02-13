@@ -14,20 +14,19 @@ class building:
         self.__people = []
         self.__floors = []
 
-        self.__createLift()
+        # self.__createLift()
         self.__createFloors()
-        self.__createPeople()
+        self.__distributePeople()
 
-    def __createPeople(self) -> None:
+    def __distributePeople(self) -> None:
         '''
         Creates people and distributes them to their floors.
         '''
         for i in self.__requests:
-            currentFloor = self.GetFloor(i)
             for j in self.__requests[i]:
                 newPerson = Person(j)
                 self.__people.append(newPerson)
-                currentFloor.AddToPeople(newPerson)
+                self.__floors[i].AddToPeople(newPerson)
 
     def __createFloors(self) -> None:
         '''

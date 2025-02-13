@@ -45,7 +45,7 @@ class lift:
         '''
         self.current_floor = floor
     
-    def get_current_floor(self, floor) -> int:
+    def get_current_floor(self) -> int:
         '''
         return the current floor of the lift
         '''

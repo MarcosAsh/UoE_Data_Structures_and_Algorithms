@@ -53,6 +53,6 @@ building1 = building(max_floors, max_floors, requests)
 lift1 = lift(1, )
 
 def mainloop():
-    while lift
+    while lift1.get_current_floor() <= building1.get_max_floors():
         
         time.sleep(1)

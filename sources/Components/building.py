@@ -42,9 +42,3 @@ class building:
         Creates the lift
         '''
         self.__lift = lift(0,False,False,1,self.__capacity)
-
-    def GetFloor(self, i) -> list:
-        """
-        Returns floor at index i
-        """
-        return self.__floors[i]

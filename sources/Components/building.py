@@ -5,7 +5,7 @@ from person import *
 from lift import *
 
 class building:
-    def __init__(self,floorsNum,requests,lift):
+    def __init__(self,floorsNum,capacity,requests):
         '''
         Creates building. (int floorsNum, 2dArray requests)
         '''
@@ -13,8 +13,8 @@ class building:
         self.__requests = requests
         self.__people = []
         self.__floors = []
-        self.__lift = lift
-        self.__capacity = self.__lift.get_capacity()
+        self.__capacity = capacity
+        self.__lift = lift(0, False, 1, self.__capacity)
         self.__createFloors()
         self.__createPeople()
 

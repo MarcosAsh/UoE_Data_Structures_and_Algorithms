@@ -6,13 +6,12 @@ import threading
 
 # Ensure the sources directory is in the Python path
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "Components")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "components")))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "algorithms")))
 
-from components.lift import lift
 from components.building import building
-from components.floor import Floor
 from algorithms.scan_algorithm import scan_algorithm_real_time
+from algorithms.look_algorithm import look_algorithm_real_time
 
 
 def read_input_file(filename):
@@ -65,7 +64,7 @@ def mainloop():
             # For each person on the current floor
             for person in requests[floor]:
                 # Add the person to the lift
-                Lift.add_people()
+                Lift.add_person()
 
 if __name__ == "__main__":
     mainloop()

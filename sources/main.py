@@ -47,7 +47,7 @@ def read_input_file(filename):
     return num_floors, lift_capacity, requests
 
 class LiftSimulation:
-    def __init__(self, root, input_file="input.txt"):
+    def __init__(self, root, input_file="sources/input.txt"):
         self.root = root
         self.num_floors, self.lift_capacity, self.people_waiting = read_input_file(input_file)
         self.current_floor = 0

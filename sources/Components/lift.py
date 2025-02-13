@@ -1,9 +1,8 @@
 #lift components
 
 class lift:
-    def __init__(self, current_floor, doors_open, moving, direction, capacity):
+    def __init__(self, current_floor, moving, direction, capacity):
         self.current_floor = current_floor
-        self.doors_open = doors_open
         self.moving = moving
         self.direction = direction
         self.capacity = capacity

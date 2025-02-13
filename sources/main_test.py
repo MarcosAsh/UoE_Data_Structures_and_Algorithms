@@ -57,15 +57,15 @@ def mainloop():
     Lift = building.getLift()
      # While the lift is not at the top floor
     while building.getLift().get_current_floor() < max_floors:
-        total_seek, sequence = scan_algorithm_real_time(requests, Lift.get_current_floor(), Lift.get_move(), building.__numOfFloors)
+        total_seek, sequence = scan_algorithm_real_time(requests, Lift.get_current_floor(), Lift.get_move(), max_floors)
         print(f"Total seek operations: {total_seek}")
         print("Seek sequence:", sequence)
-        # For each person waiting on the current floor
-        for request in scan_algorithm_real_time():
-            # Add the person to the lift
-            Building.getLift().add_people()
-            # Print the current capacity of the lift to check
-            print(building.getLift().get_num_people())
+        # For each floor in the sequence
+        for floor in sequence:
+            # For each person on the current floor
+            for person in requests[floor]:
+                # Add the person to the lift
+                Lift.add_people()
 
 if __name__ == "__main__":
     mainloop()

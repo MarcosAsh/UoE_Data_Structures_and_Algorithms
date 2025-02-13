@@ -50,15 +50,14 @@ def read_input_file(filename):
 
 max_floors, lift_capacity, requests = read_input_file('sources/input.txt')
 print(requests, lift_capacity, max_floors)
-Building = building(max_floors, requests) 
-Lift = lift(1, False, 1, lift_capacity)
+Building = building(max_floors, lift_capacity requests) 
 
 
 def mainloop():
-    while Lift.get_current_floor() < max_floors: # while the lift is not at the top floor
-        for waiting in requests[Lift.get_current_floor()]: # for each person waiting on the current floor
-            Lift.add_people() # add the person to the lift
-            print(Lift.get_num_people()) # print the current capacity of the lift to check
+    while building.getLift().get_current_floor() < max_floors: # while the lift is not at the top floor
+        for waiting in requests[Building.getLift().get_current_floor()]: # for each person waiting on the current floor
+            Building.getLift().add_people() # add the person to the lift
+            print(building.getLift().get_num_people()) # print the current capacity of the lift to check
 
 if __name__ == "__main__":
     mainloop()

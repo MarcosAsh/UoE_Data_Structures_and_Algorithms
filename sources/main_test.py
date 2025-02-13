@@ -56,6 +56,7 @@ Lift = lift(1, False, 1, lift_capacity)
 
 def mainloop():
     while Lift.get_current_floor() < max_floors:
+        # Add people into the lift
         for waiting in requests[Lift.get_current_floor()]:
             Lift.add_capacity()
             print(Lift.get_capacity())

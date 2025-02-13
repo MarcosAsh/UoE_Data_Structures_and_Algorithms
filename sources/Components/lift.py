@@ -51,15 +51,15 @@ class lift:
         '''
         return self.__current_floor
     
-    def add_capacity(self) -> None:
+    def add_people(self) -> None:
         '''
-        add a person to the lift capcity + 1
+        add a person to the lift + 1
         '''
         self.__capacity += 1
 
-    def get_capacity(self) -> int:
+    def get_num_people(self) -> int:
         '''
-        return the capacity of the lift
+        return the number of people in the lift
         '''
         return self.__capacity
 

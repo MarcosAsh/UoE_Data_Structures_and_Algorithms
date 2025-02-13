@@ -9,10 +9,10 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "Components")))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "algorithms")))
 
-from components.lift import lift
+# Import all other classes
 from components.building import building
-from components.floor import Floor
 from algorithms.scan_algorithm import scan_algorithm_real_time
+from algorithms.look_algorithm import look_algorithm_real_time
 
 
 def read_input_file(filename):
@@ -46,17 +46,21 @@ def read_input_file(filename):
     
     return num_floors, lift_capacity, requests
 
-
+# Assign variables from input file
 max_floors, lift_capacity, requests = read_input_file('sources/input.txt')
-print(requests, lift_capacity, max_floors)
+# Create building class
 Building = building(max_floors, lift_capacity, requests) 
 
 
 def mainloop():
-    while building.getLift().get_current_floor() < max_floors: # while the lift is not at the top floor
-        for waiting in requests[Building.getLift().get_current_floor()]: # for each person waiting on the current floor
-            Building.getLift().add_people() # add the person to the lift
-            print(building.getLift().get_num_people()) # print the current capacity of the lift to check
+     # While the lift is not at the top floor
+    while building.getLift().get_current_floor() < max_floors:
+        # For each person waiting on the current floor
+        for waiting in requests[Building.getLift().get_current_floor()]:
+            # Add the person to the lift
+            Building.getLift().add_people()
+            # Print the current capacity of the lift to check
+            print(building.getLift().get_num_people())
 
 if __name__ == "__main__":
     mainloop()

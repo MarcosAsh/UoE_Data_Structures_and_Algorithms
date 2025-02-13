@@ -2,66 +2,66 @@
 
 class lift:
     def __init__(self, current_floor, moving, direction, capacity):
-        self.current_floor = current_floor
-        self.moving = moving
-        self.direction = direction
-        self.capacity = capacity
+        self.__current_floor = current_floor
+        self.__moving = moving
+        self.__direction = direction
+        self.__capacity = capacity
 
     def move_up(self) -> None:
         '''
         set lift to move up, direction = 1
         '''
-        self.moving = True
-        self.direction = 1
+        self.__moving = True
+        self.__direction = 1
 
     def move_down(self) -> None:
         '''
         set lift to move down, direction = -1
         '''
-        self.moving = True
-        self.direction = -1
+        self.__moving = True
+        self.__direction = -1
     
     def get_move(self) -> int:
         '''
         returns move direction, 1 / -1
         '''
-        return self.direction
+        return self.__direction
 
     def stop(self) -> None:
         '''
         set lift moving to False
         '''
-        self.moving = False
+        self.__moving = False
 
     def state(self) -> bool:
         '''
         returns the state of the lift, True if moving, False if not
         '''
-        return self.moving
+        return self.__moving
 
     def change_current_floor(self, floor) -> None:
         '''
         change the current floor of the lift
         '''
-        self.current_floor = floor
+        self.__current_floor = floor
     
     def get_current_floor(self) -> int:
         '''
         return the current floor of the lift
         '''
-        return self.current_floor
+        return self.__current_floor
     
     def add_capacity(self) -> None:
         '''
         add a person to the lift capcity + 1
         '''
-        self.capacity += 1
+        self.__capacity += 1
 
     def get_capacity(self) -> int:
         '''
         return the capacity of the lift
         '''
-        return self.capacity
+        return self.__capacity
 
     def __str__(self) -> str:
         return self.name

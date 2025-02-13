@@ -49,10 +49,10 @@ def read_input_file(filename):
 
 
 max_floors, lift_capacity, requests = read_input_file('sources/input.txt')
-building1 = building(max_floors, max_floors, requests) 
-lift1 = lift(1, )
+building1 = building(max_floors, lift_capacity, requests) 
+lift1 = lift(1, False, 1, lift_capacity)
 
 def mainloop():
-    while lift1.get_current_floor() <= building1.get_max_floors():
+    while lift1.get_current_floor() <= building1.get_max_f:
         
         time.sleep(1)

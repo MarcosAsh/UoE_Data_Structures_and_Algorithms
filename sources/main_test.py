@@ -50,7 +50,7 @@ def read_input_file(filename):
 
 max_floors, lift_capacity, requests = read_input_file('sources/input.txt')
 print(requests, lift_capacity, max_floors)
-Building = building(max_floors, lift_capacity requests) 
+Building = building(max_floors, lift_capacity, requests) 
 
 
 def mainloop():

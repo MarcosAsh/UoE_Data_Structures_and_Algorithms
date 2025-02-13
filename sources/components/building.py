@@ -20,8 +20,10 @@ class building:
         '''
         Creates people and distributes them to their floors.
         '''
+        #gets the current floor as i
         for i in self.__requests:
             currentFloor = self.GetFloor(i)
+            #gets the current request as j
             for j in self.__requests[i]:
                 newPerson = j
                 currentFloor.AddToPeople(newPerson)

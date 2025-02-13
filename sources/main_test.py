@@ -55,18 +55,10 @@ Lift = lift(1, False, 1, lift_capacity)
 
 
 def mainloop():
-<<<<<<< HEAD
     while Lift.get_current_floor() < max_floors: # while the lift is not at the top floor
         for waiting in requests[Lift.get_current_floor()]: # for each person waiting on the current floor
-            Lift.add_capacity() # add the person to the lift
-            print(Lift.get_capacity()) # print the current capacity of the lift to check
-=======
-    while Lift.get_current_floor() < max_floors:
-        # Add people into the lift
-        for waiting in requests[Lift.get_current_floor()]:
-            Lift.add_capacity()
-            print(Lift.get_capacity())
->>>>>>> 309f566fa7a3dcb67d01ac131a7bfa79bd56e7c9
+            Lift.add_people() # add the person to the lift
+            print(Lift.get_num_people()) # print the current capacity of the lift to check
 
 if __name__ == "__main__":
     mainloop()

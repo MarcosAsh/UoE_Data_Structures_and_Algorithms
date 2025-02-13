@@ -5,16 +5,16 @@ from person import *
 from lift import *
 
 class building:
-    def __init__(self,floorsNum,liftCapacity,requests):
+    def __init__(self,floorsNum,requests,lift):
         '''
-        Creates building. (int floorsNum, int liftCapacity, 2dArray requests)
+        Creates building. (int floorsNum, 2dArray requests)
         '''
         self.__numOfFloors = floorsNum
-        self.__capacity = liftCapacity
         self.__requests = requests
         self.__people = []
         self.__floors = []
-        self.__lift = lift(0,False,False,1,self.__capacity)
+        self.__lift = lift
+        self.__capacity = self.__lift.get_capacity()
         self.__createFloors()
         self.__createPeople()
 
@@ -35,3 +35,6 @@ class building:
         '''
         for i in range(self.__numOfFloors):
             self.__floors.append(Floor(i))
+
+    def getLift(self):
+        return self.__lift

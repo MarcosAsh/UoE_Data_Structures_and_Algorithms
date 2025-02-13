@@ -97,12 +97,11 @@ class LiftSimulation:
 
     def start_simulation(self):
         """Run the lift using SCAN algorithm"""
-        my_lift = lift(current_floor=0, doors_open=False, moving=False, direction=1, capacity=self.lift_capacity)
-        my_building = building(self.num_floors, self.people_waiting, my_lift)
+        my_building = building(self.num_floors,self.lift_capacity, self.people_waiting)
 
         def run_lift():
             requests = [dest for floor in self.people_waiting.values() for dest in floor]
-            total_seek, seek_sequence = scan_algorithm_real_time(requests, my_lift.current_floor, my_lift.direction, self.num_floors)
+            total_seek, seek_sequence = scan_algorithm_real_time(requests, my_building.getLift().current_floor, my_building.getLift().direction, self.num_floors)
 
             for floor in seek_sequence:
                 time.sleep(1)

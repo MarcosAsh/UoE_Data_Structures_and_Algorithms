@@ -47,10 +47,10 @@ def read_input_file(filename):
 
     return num_floors, lift_capacity, requests
 
+# Assign variables from input file
 max_floors, lift_capacity, requests = read_input_file('sources/input.txt')
-print(requests, lift_capacity, max_floors)
-Building = building(max_floors, requests) 
-Lift = lift(1, False, 1, lift_capacity)
+# Create building class
+Building = building(max_floors, lift_capacity, requests)
 
 
 def mainloop():

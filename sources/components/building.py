@@ -12,9 +12,14 @@ class building:
         self.__requests = requests
         self.__floors = []
         self.__capacity = capacity
-        self.__lift = lift(0, False, 1, self.__capacity)
+        self.__lift = lift(0, False, 1, self.__capacity, self.__getNumPeople())
         self.__createFloors()
         self.__createPeople()
+
+    def __getNumPeople(self):
+        numPeople = 0
+        for floor in self.__requests:
+            numPeople += len(floor)
 
     def __createPeople(self) -> None:
         '''

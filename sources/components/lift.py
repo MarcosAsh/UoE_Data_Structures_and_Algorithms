@@ -1,11 +1,12 @@
 #lift components
 
 class lift:
-    def __init__(self, current_floor, moving, direction, capacity):
+    def __init__(self, current_floor, moving, direction, capacity,num_people):
         self.__current_floor = current_floor
         self.__moving = moving
         self.__direction = direction
         self.__capacity = capacity
+        self.__num_people = num_people
 
     def move_up(self) -> None:
         '''
@@ -61,7 +62,7 @@ class lift:
         '''
         return the number of people in the lift
         '''
-        return self.__capacity
+        return self.__num_people
 
     def __str__(self) -> str:
         return self.name

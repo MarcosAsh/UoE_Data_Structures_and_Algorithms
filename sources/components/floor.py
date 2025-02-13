@@ -1,12 +1,12 @@
 class Floor:
     def __init__(self, ID):
         self.__people_list = []
-        self.__floor_ID = ID    
+        self.__floor_ID = ID
         self.__number_people = 0
 
     def AddToPeople(self, person) -> None:
         """
-        Adds a target person class to the floor
+        Adds a person to the floor. Person representation in this context is a requested floor
         """
         self.__people_list.append(person)
         self.__number_people += 1

@@ -32,11 +32,12 @@ def scan_algorithm_real_time(requests, head, direction, max_floor):
     threading.Timer(5, lambda: add_request(90)).start()
     
     while requests or left or right:
-        for req in requests:
-            if req < head:
-                left.append(req)
-            elif req > head:
-                right.append(req)
+        for floor in requests:
+            for req in floor:
+                if req < head:
+                    left.append(req)
+                elif req > head:
+                    right.append(req)
         
         left = quicksort(left)
         right = quicksort(right)

@@ -9,7 +9,7 @@ for floornum in range(300):
     # make file name sequentially and put into input_files folder
     file_name = os.path.join(folder_name, f"input{floornum}.txt")
     # defines the number of floors and the capacity
-    num_floors = random.randint(3, 100)
+    num_floors = random.randint(3, 30)
     capacity = 5
 
     # creates/overwrites if exists

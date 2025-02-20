@@ -8,11 +8,13 @@ import matplotlib.pyplot as plt
 
 # Ensure the sources directory is in the Python path
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "Components")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "components")))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "algorithms")))
 
-from building import building
+
+from components.building import building
 from algorithms.scan_algorithm import scan_algorithm_real_time
+from algorithms.look_algorithm import look_algorithm_real_time
 
 # Read input file
 def read_input_file(filename):
@@ -64,7 +66,7 @@ def measure_time_complexity():
     look_times = []
     num_requests = []
 
-    for i in range(1, 201): # simulation 200 input files
+    for i in range(1, 300): # simulation 300 input files
         filename = f"input{i}.txt" # file names for input file
         num_floors, lift_capacity, requests = read_input_file(filename)
         lift = building(num_floors, lift_capacity, requests).getLift()

@@ -13,6 +13,10 @@ from components.building import building
 from algorithms.scan_algorithm import scan_algorithm_real_time
 from algorithms.look_algorithm import look_algorithm_real_time
 
+class InvalidInputError(Exception):
+    """Exception raised for invalid input."""
+    def __init__(self, message="Invalid input provided"):
+        super().__init__(message)
 
 def read_input_file(filename):
     """Reads the input file and returns number of floors, lift capacity, and requests as a 2D array."""
@@ -21,29 +25,37 @@ def read_input_file(filename):
     requests = []
 
     with open(filename, 'r') as file:
-        lines = file.readlines()
+            lines = file.readlines()
 
-        # Read number of floors and lift capacity
-        for line in lines:
-            line = line.strip()
-            if line.startswith("#") or not line:
-                continue
-            if "," in line:
-                num_floors, lift_capacity = map(int, line.split(","))
-                requests = [[] for _ in range(num_floors)]  # Initialize a 2D array
-                break
+            # Read number of floors and lift capacity
+            for line in lines:
+                line = line.strip()
+                if line.startswith("#") or not line:
+                    continue
+                if "," in line:
+                    #checks both number of floors and lift capacity are correct in the input file
+                    try:
+                        #ensures both are present
+                        parts = line.split(",")
+                        if len(parts) != 2 or not parts[0].strip():  
+                            raise InvalidInputError("Invalid input provided. Line 2 in inputFile.")
+                        num_floors, lift_capacity = map(int, line.split(","))
+                    #ensures both are integers
+                    except(ValueError):
+                        raise InvalidInputError(message="Invalid input provided. Line 2 in input file, non-integer value.")
+                    requests = [[] for _ in range(num_floors)]  # Initialize a 2D array
+                    break
 
-        # Read floor requests
-        for line in lines:
-            line = line.strip()
-            if line.startswith("#") or not line:
-                continue
-            if ":" in line:
-                floor, destinations = line.split(":")
-                floor = int(floor.strip()) - 1  # Convert floor to 0-based index
-                if destinations.strip():
-                    requests[floor] = list(map(int, destinations.split(",")))
-
+            # Read floor requests
+            for line in lines:
+                line = line.strip()
+                if line.startswith("#") or not line:
+                    continue
+                if ":" in line:
+                    floor, destinations = line.split(":")
+                    floor = int(floor.strip()) - 1  # Convert floor to 0-based index
+                    if destinations.strip():
+                        requests[floor] = list(map(int, destinations.split(",")))
     return num_floors, lift_capacity, requests
 
 # Assign variables from input file

@@ -1,117 +1,112 @@
 import sys
 import os
 import tkinter as tk
-import time
 import threading
+import time
+import matplotlib.pyplot as plt
+
 
 # Ensure the sources directory is in the Python path
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "Components")))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "algorithms")))
 
-from components.lift import lift
-from components.building import building
-from components.floor import Floor
-from components.person import Person
+from building import building
 from algorithms.scan_algorithm import scan_algorithm_real_time
 
+# Read input file
 def read_input_file(filename):
-    """Reads the input file and returns number of floors, lift capacity, and requests."""
     num_floors = 0
     lift_capacity = 0
-    requests = {}
-    
+    requests = []
     with open(filename, 'r') as file:
         lines = file.readlines()
-        
-        # Read number of floors and lift capacity
         for line in lines:
             line = line.strip()
             if line.startswith("#") or not line:
                 continue
             if "," in line:
                 num_floors, lift_capacity = map(int, line.split(","))
+                requests = [[] for _ in range(num_floors)]
                 break
-        
-        # Read floor requests
         for line in lines:
             line = line.strip()
             if line.startswith("#") or not line:
                 continue
             if ":" in line:
                 floor, destinations = line.split(":")
-                floor = int(floor.strip())
-                destinations = list(map(int, destinations.split(","))) if destinations.strip() else []
-                requests[floor - 1] = destinations
-    
+                floor = int(floor.strip()) - 1
+                if destinations.strip():
+                    requests[floor] = list(map(int, destinations.split(",")))
     return num_floors, lift_capacity, requests
 
-class LiftSimulation:
-    def __init__(self, root, input_file="sources/input.txt"):
-        self.root = root
-        self.num_floors, self.lift_capacity, self.people_waiting = read_input_file(input_file)
-        self.current_floor = 0
-        self.people_in_lift = []
-        
-        self.canvas = tk.Canvas(root, width=400, height=500, bg="white")
-        self.canvas.pack()
-        
-        self.draw_building()
-        self.lift_rect = self.canvas.create_rectangle(150, 450, 250, 500, fill="gray")
-        
-        self.start_simulation()
 
-    def draw_building(self):
-        """Draw floors and labels"""
-        for i in range(self.num_floors):
-            y = 450 - (i * 50)
-            self.canvas.create_line(50, y, 350, y, fill="black")
-            self.canvas.create_text(30, y + 20, text=f"Floor {i}", font=("Arial", 12))
-    
-    def update_lift_position(self, new_floor):
-        """Move lift up or down"""
-        y_offset = (self.current_floor - new_floor) * 50
-        self.canvas.move(self.lift_rect, 0, y_offset)
-        self.current_floor = new_floor
-        self.root.update()
+# Initialize building
+max_floors, lift_capacity, requests = read_input_file('input.txt')
+Building = building(max_floors, lift_capacity, requests)
 
-    def simulate_people_movement(self, target_floor):
-        """Animate people entering/exiting the lift"""
-        self.canvas.delete("people")
-        
-        # Removing anyone getting off at the current floor
-        self.people_in_lift = [p for p in self.people_in_lift if p != target_floor]
-        
-        # Adding anyone waiting on the floor until the capacity is met or there are no more people waiting
-        if target_floor in self.people_waiting:
-            while len(self.people_in_lift) < self.lift_capacity and self.people_waiting[target_floor]:
-                self.people_in_lift.append(self.people_waiting[target_floor].pop(0))
-        
-        # Draw people in lift
-        for idx, _ in enumerate(self.people_in_lift):
-            self.canvas.create_oval(180 + idx * 10, 460 - (self.current_floor * 50), 
-                                    190 + idx * 10, 470 - (self.current_floor * 50), 
-                                    fill="blue", tags="people")
+# GUI class
+def update_gui():
+    while True:
+        total_seek, sequence = scan_algorithm_real_time(requests, Building.getLift().get_current_floor(), Building.getLift().get_move(), max_floors)
+        for floor in reversed(range(max_floors)):
+            if floor == Building.getLift().get_current_floor():
+                labels[floor].config(bg='green')
+            else:
+                labels[floor].config(bg='white')
 
-        self.root.update()
+def start_simulation():
+    threading.Thread(target=update_gui, daemon=True).start()
 
-    def start_simulation(self):
-        """Run the lift using SCAN algorithm"""
-        my_building = building(self.num_floors,self.lift_capacity, self.people_waiting)
+# Function to measure and plot time complexity
+def measure_time_complexity():
+    scan_times = []
+    look_times = []
+    num_requests = []
 
-        def run_lift():
-            requests = [dest for floor in self.people_waiting.values() for dest in floor]
-            total_seek, seek_sequence = scan_algorithm_real_time(requests, my_building.getLift().current_floor, my_building.getLift().direction, self.num_floors)
+    for i in range(1, 201): # simulation 200 input files
+        filename = f"input{i}.txt" # file names for input file
+        num_floors, lift_capacity, requests = read_input_file(filename)
+        lift = building(num_floors, lift_capacity, requests).getLift()
 
-            for floor in seek_sequence:
-                time.sleep(1)
-                self.update_lift_position(floor)
-                self.simulate_people_movement(floor)
+        start = time.time()
+        scan_algorithm_real_time(requests, lift.get_current_floor(), lift.get_move(), num_floors)
+        scan_times.append(time.time()- start)
 
-        threading.Thread(target=run_lift, daemon=True).start()
+        start = time.time()
+        look_algorithm_real_time(num_floors, [req for floor in requests for req in floor], lift.get_current_floor(), lift.get_move())
+        look_times.append(time.time() - start)
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    root.title("Lift Simulation")
-    app = LiftSimulation(root, input_file="sources/input.txt")
-    root.mainloop()
+        num_requests.append(sum(len(floor)for floor in requests))
+    plt.figure(fig_size=(10,5))
+    plt.plot(num_requests, scan_times, label='SCAN algorithm', marker='o')
+    plt.plot(num_requests, look_times, label='LOOK algorithm', marker='s')
+    plt.xlabel('Number of Requests')
+    plt.ylabel('Execution time (s)')
+    plt.title("Time Complexity of SCAN vs LOOK Algorithm")
+    plt.legend()
+    plt.grid()
+    plt.show()
+
+# Create the Tkinter window
+root = tk.Tk()
+root.title("Lift simulation")
+root.geometry("600x600")
+
+# Create floor labels
+labels = []
+for i in range(max_floors):
+    label = tk.Label(root, text=f"Floor {i+1}", width=20, height=2, bg='white', relief="solid")
+    label.pack(side="bottom")
+    labels.append(label)
+
+# Start button
+start_button = tk.Button(root, text="Start Simulation", command=start_simulation)
+start_button.pack()
+
+# Plot complexity button
+plot_button = tk.Button(root, text="Plot Time Complexity", command=measure_time_complexity)
+plot_button.pack()
+
+# Run the application
+root.mainloop()

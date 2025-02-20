@@ -10,7 +10,7 @@ def quicksort(arr):
     right = [x for x in arr if x > pivot]
     return quicksort(left) + middle + quicksort(right)
 
-def scan_algorithm_real_time(requests, head, direction, max_floor):
+def scan_algorithm_real_time(requests, head, direction, one_floor_moving_time):
     """
     requests: List of requested floors.
     head: Current floor of the lift.
@@ -22,14 +22,6 @@ def scan_algorithm_real_time(requests, head, direction, max_floor):
     left = []
     right = []
     seek_sequence = []
-    
-    def add_request(new_request):
-        """Function to simulate real time request arrival"""
-        requests.append(new_request)
-        print(f"New request added: {new_request}")
-    
-    threading.Timer(3, lambda: add_request(25)).start()
-    threading.Timer(5, lambda: add_request(90)).start()
     
     while requests or left or right:
         for floor in requests:
@@ -57,7 +49,7 @@ def scan_algorithm_real_time(requests, head, direction, max_floor):
                 seek_count += abs(head - current_track)
                 head = current_track
             direction = -1
-        time.sleep(1)  # Simulate real-time movement
+        time.sleep(one_floor_moving_time)  # Simulate real-time movement
     
     return seek_count, seek_sequence
 
@@ -68,6 +60,6 @@ if __name__ == "__main__":
     direction = -1
     max_floor = 200
 
-    total_seek, sequence = scan_algorithm_real_time(requests, head, direction, max_floor)
+    total_seek, sequence = scan_algorithm_real_time(requests, head, direction)
     print(f"Total seek operations: {total_seek}")
     print("Seek sequence:", sequence)

@@ -12,7 +12,7 @@ def quicksort(arr):
     return quicksort(left) + middle + quicksort(right)
 
 # LOOK algorithm handling real-time requests
-def look_algorithm_real_time(floors, requests, current_floor, direction):
+def look_algorithm_real_time(requests, current_floor, direction, one_floor_moving_time):
     """
     floors: Total number of floors in the building.
     requests: List of requested floors.
@@ -20,14 +20,6 @@ def look_algorithm_real_time(floors, requests, current_floor, direction):
     direction: Initial direction of movement ('up' or 'down').
     return: The final floor the lift reaches after serving all requests.
     """
-    def add_request(new_request):
-        """Simulates real-time request arrival"""
-        requests.append(new_request)
-        print(f"New request added: {new_request}")
-    
-    # Simulate dynamic requests appearing in real-time
-    threading.Timer(3, lambda: add_request(25)).start()
-    threading.Timer(5, lambda: add_request(90)).start()
 
     requests = quicksort(requests)
     while requests:
@@ -38,6 +30,7 @@ def look_algorithm_real_time(floors, requests, current_floor, direction):
             next_requests = [req for req in requests if req >= current_floor]
             if next_requests:
                 next_floor = min(next_requests)
+                moving_time = one_floor_moving_time * abs(next_floor-current_floor) # Adjusts the waiting time to simulate moving between a varying number of floors
             else:
                 direction = -1  # Change direction
                 continue
@@ -45,21 +38,23 @@ def look_algorithm_real_time(floors, requests, current_floor, direction):
             next_requests = [req for req in requests if req <= current_floor]
             if next_requests:
                 next_floor = max(next_requests)
+                moving_time = one_floor_moving_time * abs(next_floor-current_floor) # Adjusts the waiting time to simulate moving between a varying number of floors
             else:
                 direction = 1  # Change direction
                 continue
         
         current_floor = next_floor
         requests.remove(current_floor)
-        time.sleep(1)  # Simulate real-time movement
+        time.sleep(moving_time)  # Simulate real-time movement
     
     return current_floor
 
 # Test code
-requests = [0, 5, 3, 7, 9, 2]
-floors = 10
-current_floor = 50
-direction = 1  # 1 for up, -1 for down
+if __name__ == "__main__":
+    requests = [0, 5, 3, 7, 9, 2]
+    floors = 10
+    current_floor = 50
+    direction = 1  # 1 for up, -1 for down
 
-final_floor = look_algorithm_real_time(floors, requests, current_floor, direction)
-print(f"Final Floor: {final_floor}")
+    final_floor = look_algorithm_real_time(requests, current_floor, direction)
+    print(f"Final Floor: {final_floor}")

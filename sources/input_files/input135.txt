@@ -1,0 +1,6 @@
+# Number of Floors, Capacity
+3, 5
+# Floor Requests
+0: 1, 2, 1, 0
+1: 0, 0
+2: 0, 1, 1, 0, 1

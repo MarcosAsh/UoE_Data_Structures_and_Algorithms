@@ -5,12 +5,10 @@ import threading
 import time
 import matplotlib.pyplot as plt
 
-
 # Ensure the sources directory is in the Python path
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "components")))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "algorithms")))
-
 
 from components.building import building
 from algorithms.scan_algorithm import scan_algorithm_real_time
@@ -42,63 +40,75 @@ def read_input_file(filename):
                     requests[floor] = list(map(int, destinations.split(",")))
     return num_floors, lift_capacity, requests
 
-
 # Initialize building
-max_floors, lift_capacity, requests = read_input_file('sources/input_files/input0.txt') # file selected for simulation
+max_floors, lift_capacity, requests = read_input_file('sources/input_files/input0.txt') # File for simulation
 Building = building(max_floors, lift_capacity, requests)
+Lift = Building.getLift()
 
-# GUI class
+# GUI Class
 def update_gui():
-    while True:
-        total_seek, sequence = scan_algorithm_real_time(requests, Building.getLift().get_current_floor(), Building.getLift().get_move(), max_floors)
-        for floor in reversed(range(max_floors)):
-            if floor == Building.getLift().get_current_floor():
-                labels[floor].config(bg='green') # green for floor we are currently located on
-            else:
-                labels[floor].config(bg='white') # white for any floors we are not on
+    for floor in reversed(range(max_floors)):
+        if floor == Lift.get_current_floor():
+            labels[floor].config(bg='green')
+        else:
+            labels[floor].config(bg='white')
 
-# Starting simulation of tkinter
+def main_loop():
+    while True:
+        total_seek, sequence = scan_algorithm_real_time(requests, Lift.get_current_floor(), Lift.get_move(), max_floors)
+        for target_floor in sequence:
+            Lift.change_current_floor(target_floor)
+            update_gui()
+            time.sleep(1)
+            
+            # Handle people getting on and off
+            floor_obj = Building.getFloor(target_floor)
+            people_waiting = floor_obj.GetPeople()
+            for person in people_waiting[:]:  # Copy list to avoid modifying while iterating
+                if Lift.get_num_people() < lift_capacity:
+                    Lift.add_people(person)
+                    floor_obj.RemoveFromPeople(person)
+            update_gui()
+            time.sleep(1)
+
 def start_simulation():
-    threading.Thread(target=update_gui, daemon=True).start()
+    threading.Thread(target=main_loop, daemon=True).start()
 
 # Function to measure and plot time complexity
 def measure_time_complexity():
     scan_times = []
     look_times = []
     num_requests = []
-
-    for i in range(0, 300): # simulation 300 input files
-        print(i)
-        filename = "sources/components/input_files/input"+ i +".txt" # file names for input file
+    
+    for i in range(1, 201):  # Simulating 200 input files
+        filename = f"sources/input_files/input{i}.txt"
         num_floors, lift_capacity, requests = read_input_file(filename)
         lift = building(num_floors, lift_capacity, requests).getLift()
-
-        # Get times for SCAN algorithm
+        
         start = time.time()
         scan_algorithm_real_time(requests, lift.get_current_floor(), lift.get_move(), num_floors)
-        scan_times.append(time.time()- start)
-
-        # Get time for LOOK algorithm
+        scan_times.append(time.time() - start)
+        
         start = time.time()
         look_algorithm_real_time(num_floors, [req for floor in requests for req in floor], lift.get_current_floor(), lift.get_move())
         look_times.append(time.time() - start)
-
-        num_requests.append(sum(len(floor)for floor in requests))
-    # Plot both graphs
-    plt.figure(fig_size=(10,5))
-    plt.plot(num_requests, scan_times, label='SCAN algorithm', marker='o')
-    plt.plot(num_requests, look_times, label='LOOK algorithm', marker='s')
+        
+        num_requests.append(sum(len(floor) for floor in requests))
+    
+    plt.figure(figsize=(10, 5))
+    plt.plot(num_requests, scan_times, label='SCAN Algorithm', marker='o')
+    plt.plot(num_requests, look_times, label='LOOK Algorithm', marker='s')
     plt.xlabel('Number of Requests')
-    plt.ylabel('Execution time (s)')
-    plt.title("Time Complexity of SCAN vs LOOK Algorithm")
+    plt.ylabel('Execution Time (s)')
+    plt.title('Time Complexity of SCAN vs LOOK Algorithm')
     plt.legend()
     plt.grid()
     plt.show()
 
 # Create the Tkinter window
 root = tk.Tk()
-root.title("Lift simulation")
-root.geometry("600x600")
+root.title("Lift Simulation")
+root.geometry("300x600")
 
 # Create floor labels
 labels = []

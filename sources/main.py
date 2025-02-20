@@ -44,7 +44,7 @@ def read_input_file(filename):
 
 
 # Initialize building
-max_floors, lift_capacity, requests = read_input_file('sources/input_files/input0.txt')
+max_floors, lift_capacity, requests = read_input_file('sources/input_files/input0.txt') # file selected for simulation
 Building = building(max_floors, lift_capacity, requests)
 
 # GUI class
@@ -53,10 +53,11 @@ def update_gui():
         total_seek, sequence = scan_algorithm_real_time(requests, Building.getLift().get_current_floor(), Building.getLift().get_move(), max_floors)
         for floor in reversed(range(max_floors)):
             if floor == Building.getLift().get_current_floor():
-                labels[floor].config(bg='green')
+                labels[floor].config(bg='green') # green for floor we are currently located on
             else:
-                labels[floor].config(bg='white')
+                labels[floor].config(bg='white') # white for any floors we are not on
 
+# Starting simulation of tkinter
 def start_simulation():
     threading.Thread(target=update_gui, daemon=True).start()
 
@@ -72,15 +73,18 @@ def measure_time_complexity():
         num_floors, lift_capacity, requests = read_input_file(filename)
         lift = building(num_floors, lift_capacity, requests).getLift()
 
+        # Get times for SCAN algorithm
         start = time.time()
         scan_algorithm_real_time(requests, lift.get_current_floor(), lift.get_move(), num_floors)
         scan_times.append(time.time()- start)
 
+        # Get time for LOOK algorithm
         start = time.time()
         look_algorithm_real_time(num_floors, [req for floor in requests for req in floor], lift.get_current_floor(), lift.get_move())
         look_times.append(time.time() - start)
 
         num_requests.append(sum(len(floor)for floor in requests))
+    # Plot both graphs
     plt.figure(fig_size=(10,5))
     plt.plot(num_requests, scan_times, label='SCAN algorithm', marker='o')
     plt.plot(num_requests, look_times, label='LOOK algorithm', marker='s')

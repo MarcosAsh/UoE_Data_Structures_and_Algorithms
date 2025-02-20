@@ -23,14 +23,6 @@ def scan_algorithm_real_time(requests, head, direction):
     right = []
     seek_sequence = []
     
-    def add_request(new_request):
-        """Function to simulate real time request arrival"""
-        requests.append(new_request)
-        print(f"New request added: {new_request}")
-    
-    threading.Timer(3, lambda: add_request(25)).start()
-    threading.Timer(5, lambda: add_request(90)).start()
-    
     while requests or left or right:
         for floor in requests:
             for req in floor:
@@ -68,6 +60,6 @@ if __name__ == "__main__":
     direction = -1
     max_floor = 200
 
-    total_seek, sequence = scan_algorithm_real_time(requests, head, direction, max_floor)
+    total_seek, sequence = scan_algorithm_real_time(requests, head, direction)
     print(f"Total seek operations: {total_seek}")
     print("Seek sequence:", sequence)

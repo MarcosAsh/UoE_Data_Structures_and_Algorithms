@@ -20,14 +20,6 @@ def look_algorithm_real_time(requests, current_floor, direction):
     direction: Initial direction of movement ('up' or 'down').
     return: The final floor the lift reaches after serving all requests.
     """
-    def add_request(new_request):
-        """Simulates real-time request arrival"""
-        requests.append(new_request)
-        print(f"New request added: {new_request}")
-    
-    # Simulate dynamic requests appearing in real-time
-    threading.Timer(3, lambda: add_request(25)).start()
-    threading.Timer(5, lambda: add_request(90)).start()
 
     requests = quicksort(requests)
     while requests:
@@ -56,10 +48,11 @@ def look_algorithm_real_time(requests, current_floor, direction):
     return current_floor
 
 # Test code
-requests = [0, 5, 3, 7, 9, 2]
-floors = 10
-current_floor = 50
-direction = 1  # 1 for up, -1 for down
+if __name__ == "__main__":
+    requests = [0, 5, 3, 7, 9, 2]
+    floors = 10
+    current_floor = 50
+    direction = 1  # 1 for up, -1 for down
 
-final_floor = look_algorithm_real_time(floors, requests, current_floor, direction)
-print(f"Final Floor: {final_floor}")
+    final_floor = look_algorithm_real_time(requests, current_floor, direction)
+    print(f"Final Floor: {final_floor}")

@@ -43,9 +43,9 @@ class building:
         Creates the floors and adds to the floors list.
         '''
         for i in range(self.__numOfFloors):
-            self.__floors.append(Floor(i))
+            self.__floors.append(floor(i))
 
-    def __getFloor(self,i) -> Floor:
+    def __getFloor(self,i) -> floor:
         return self.__floors[i]
 
     def getLift(self):

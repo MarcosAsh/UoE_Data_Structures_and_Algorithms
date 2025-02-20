@@ -45,7 +45,7 @@ class building:
         for i in range(self.__numOfFloors):
             self.__floors.append(floor(i))
 
-    def __getFloor(self,i) -> floor:
+    def getFloor(self,i) -> floor:
         return self.__floors[i]
 
     def getLift(self):

@@ -63,12 +63,11 @@ def read_input_file(filename):
 max_floors, lift_capacity, requests = read_input_file('sources/input_files/input0.txt')
 # Create building class
 Building = building(max_floors, lift_capacity, requests)
-
-
 def mainloop(algorithm):
     Lift = Building.getLift()
      # While the lift is not at the top floor
-    while Lift.get_current_floor() < max_floors:
+    while Lift.get_current_floor() <= max_floors:
+        floor
         total_seek, sequence = algorithm(requests, Lift.get_current_floor(), Lift.get_move(), 1)
         print(f"Total seek operations: {total_seek}")
         print("Seek sequence:", sequence)

@@ -1,4 +1,4 @@
-class Floor:
+class floor:
     def __init__(self, ID):
         self.__people_list = []
         self.__floor_ID = ID

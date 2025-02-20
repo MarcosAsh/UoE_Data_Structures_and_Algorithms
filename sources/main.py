@@ -44,7 +44,7 @@ def read_input_file(filename):
 
 
 # Initialize building
-max_floors, lift_capacity, requests = read_input_file('input.txt')
+max_floors, lift_capacity, requests = read_input_file('sources/input_files/input0.txt')
 Building = building(max_floors, lift_capacity, requests)
 
 # GUI class
@@ -66,8 +66,9 @@ def measure_time_complexity():
     look_times = []
     num_requests = []
 
-    for i in range(1, 300): # simulation 300 input files
-        filename = f"input{i}.txt" # file names for input file
+    for i in range(0, 300): # simulation 300 input files
+        print(i)
+        filename = "sources/components/input_files/input"+ i +".txt" # file names for input file
         num_floors, lift_capacity, requests = read_input_file(filename)
         lift = building(num_floors, lift_capacity, requests).getLift()
 

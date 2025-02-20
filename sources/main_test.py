@@ -8,6 +8,7 @@ import threading
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "components")))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "algorithms")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "input_files")))
 
 from components.building import building
 from algorithms.scan_algorithm import scan_algorithm_real_time
@@ -59,7 +60,7 @@ def read_input_file(filename):
     return num_floors, lift_capacity, requests
 
 # Assign variables from input file
-max_floors, lift_capacity, requests = read_input_file('sources/input.txt')
+max_floors, lift_capacity, requests = read_input_file('sources/input_files/input0.txt')
 # Create building class
 Building = building(max_floors, lift_capacity, requests)
 

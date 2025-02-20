@@ -52,11 +52,11 @@ max_floors, lift_capacity, requests = read_input_file('sources/input.txt')
 Building = building(max_floors, lift_capacity, requests)
 
 
-def mainloop():
+def mainloop(algorithm):
     Lift = Building.getLift()
      # While the lift is not at the top floor
     while Lift.get_current_floor() < max_floors:
-        total_seek, sequence = scan_algorithm_real_time(requests, Lift.get_current_floor(), Lift.get_move(), max_floors)
+        total_seek, sequence = algorithm(requests, Lift.get_current_floor(), Lift.get_move(), max_floors)
         print(f"Total seek operations: {total_seek}")
         print("Seek sequence:", sequence)
         # For each floor in the sequence
@@ -68,4 +68,4 @@ def mainloop():
                 print(person)
 
 if __name__ == "__main__":
-    mainloop()
+    mainloop(scan_algorithm_real_time)

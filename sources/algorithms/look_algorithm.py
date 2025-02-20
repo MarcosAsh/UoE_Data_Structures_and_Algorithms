@@ -12,7 +12,7 @@ def quicksort(arr):
     return quicksort(left) + middle + quicksort(right)
 
 # LOOK algorithm handling real-time requests
-def look_algorithm_real_time(floors, requests, current_floor, direction):
+def look_algorithm_real_time(requests, current_floor, direction):
     """
     floors: Total number of floors in the building.
     requests: List of requested floors.

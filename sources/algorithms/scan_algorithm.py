@@ -10,7 +10,7 @@ def quicksort(arr):
     right = [x for x in arr if x > pivot]
     return quicksort(left) + middle + quicksort(right)
 
-def scan_algorithm_real_time(requests, head, direction, max_floor):
+def scan_algorithm_real_time(requests, head, direction):
     """
     requests: List of requested floors.
     head: Current floor of the lift.

@@ -15,9 +15,9 @@ class building:
         self.__lift = lift(0, False, 1, self.__capacity)
         self.__createFloors()
         self.__createPeople()
-        self.__numPeople = self.__getNumPeople()
+        self.__numPeople = self.getNumPeople()
 
-    def __getNumPeople(self) -> int:
+    def getNumPeople(self) -> int:
         '''
         Returns the total number of people
         '''
@@ -26,17 +26,17 @@ class building:
             numPeople += len(floor)
         return numPeople
 
-    def __createPeople(self) -> None:
-        '''
-        Creates people and distributes them to their floors.
-        '''
-        # iterate over the indices of self.__requests
-        for i in range(len(self.__requests)):
-            currentFloor = self.__getFloor(i)
-            # iterate over the requests for the current floor
-            for j in self.__requests[i]:
-                newPerson = j
-                currentFloor.AddToPeople(newPerson)
+    # def __createPeople(self) -> None:
+    #     '''
+    #     Creates people and distributes them to their floors.
+    #     '''
+    #     # iterate over the indices of self.__requests
+    #     for i in range(len(self.__requests)):
+    #         currentFloor = self.__getFloor(i)
+    #         # iterate over the requests for the current floor
+    #         for j in self.__requests[i]:
+    #             newPerson = j
+    #             currentFloor.AddToPeople(newPerson)
 
     def __createFloors(self) -> None:
         '''

@@ -68,7 +68,7 @@ def mainloop(algorithm):
     Lift = Building.getLift()
      # While the lift is not at the top floor
     while Lift.get_current_floor() < max_floors:
-        total_seek, sequence = algorithm(requests, Lift.get_current_floor(), Lift.get_move(), max_floors)
+        total_seek, sequence = algorithm(requests, Lift.get_current_floor(), Lift.get_move(), 1)
         print(f"Total seek operations: {total_seek}")
         print("Seek sequence:", sequence)
         # For each floor in the sequence

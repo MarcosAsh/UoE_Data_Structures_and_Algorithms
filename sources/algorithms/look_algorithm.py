@@ -12,7 +12,7 @@ def quicksort(arr):
     return quicksort(left) + middle + quicksort(right)
 
 # LOOK algorithm handling real-time requests
-def look_algorithm_real_time(requests, current_floor, direction):
+def look_algorithm_real_time(requests, current_floor, direction, one_floor_moving_time):
     """
     floors: Total number of floors in the building.
     requests: List of requested floors.
@@ -30,6 +30,7 @@ def look_algorithm_real_time(requests, current_floor, direction):
             next_requests = [req for req in requests if req >= current_floor]
             if next_requests:
                 next_floor = min(next_requests)
+                moving_time = one_floor_moving_time * abs(next_floor-current_floor) # Adjusts the waiting time to simulate moving between a varying number of floors
             else:
                 direction = -1  # Change direction
                 continue
@@ -37,13 +38,14 @@ def look_algorithm_real_time(requests, current_floor, direction):
             next_requests = [req for req in requests if req <= current_floor]
             if next_requests:
                 next_floor = max(next_requests)
+                moving_time = one_floor_moving_time * abs(next_floor-current_floor) # Adjusts the waiting time to simulate moving between a varying number of floors
             else:
                 direction = 1  # Change direction
                 continue
         
         current_floor = next_floor
         requests.remove(current_floor)
-        time.sleep(1)  # Simulate real-time movement
+        time.sleep(moving_time)  # Simulate real-time movement
     
     return current_floor
 

@@ -27,10 +27,18 @@ def scan_algorithm_real_time(requests, head, direction, one_floor_moving_time):
     
     while requests or not left.is_empty() or not right.is_empty():
         for req in requests:
-            if req < head:
-                left.push(req)
-            elif req > head:
-                right.push(req)
+            # Handle nested requests (lists inside the requests list)
+            if isinstance(req, list):
+                for sub_req in req:
+                    if sub_req < head:
+                        left.push(sub_req)
+                    elif sub_req > head:
+                        right.push(sub_req)
+            else:
+                if req < head:
+                    left.push(req)
+                elif req > head:
+                    right.push(req)
         
         # Sort the stacks
         left.items = quicksort(left.items)

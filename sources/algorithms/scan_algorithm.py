@@ -1,6 +1,8 @@
 import time
 import threading
 
+from stack import stack
+
 def quicksort(arr):
     if len(arr) <= 1:
         return arr
@@ -19,47 +21,47 @@ def scan_algorithm_real_time(requests, head, direction, one_floor_moving_time):
     return: Tuple containing the total seek operations and the sequence of visited floors.
     """
     seek_count = 0
-    left = []
-    right = []
+    left = Stack()
+    right = Stack()
     seek_sequence = []
     
-    while requests or left or right:
-        for floor in requests:
-            for req in floor:
-                if req < head:
-                    left.append(req)
-                elif req > head:
-                    right.append(req)
+    while requests or not left.is_empty() or not right.is_empty():
+        for req in requests:
+            if req < head:
+                left.push(req)
+            elif req > head:
+                right.push(req)
         
-        left = quicksort(left)
-        right = quicksort(right)
+        # Sort the stacks
+        left.items = quicksort(left.items)
+        right.items = quicksort(right.items)
         requests.clear()
         
-        if direction == -1 and left:
-            while left:
+        if direction == -1 and not left.is_empty():
+            while not left.is_empty():
                 current_track = left.pop()
                 seek_sequence.append(current_track)
                 seek_count += abs(head - current_track)
                 head = current_track
             direction = 1
-        elif direction == 1 and right:
-            while right:
-                current_track = right.pop(0)
+        elif direction == 1 and not right.is_empty():
+            while not right.is_empty():
+                current_track = right.pop(0)  # Removing from the start of the list
                 seek_sequence.append(current_track)
                 seek_count += abs(head - current_track)
                 head = current_track
             direction = -1
-        time.sleep(one_floor_moving_time)  # Simulate real-time movement
+        time.sleep(one_floor_moving_time)
     
     return seek_count, seek_sequence
 
-# test code
+# Test code
 if __name__ == "__main__":
     requests = [176, 79, 34, 60, 92, 11, 41, 114]
     head = 50
     direction = -1
-    max_floor = 200
+    one_floor_moving_time = 0.1  # Example real-time simulation
 
-    total_seek, sequence = scan_algorithm_real_time(requests, head, direction)
+    total_seek, sequence = scan_algorithm_real_time(requests, head, direction, one_floor_moving_time)
     print(f"Total seek operations: {total_seek}")
     print("Seek sequence:", sequence)

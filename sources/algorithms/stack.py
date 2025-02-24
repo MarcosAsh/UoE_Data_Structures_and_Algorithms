@@ -11,6 +11,10 @@ class stack:
             return self.items.pop()
         return None
     
+    def pop_first(self):
+        if not self.is_empty():
+            return self.items.pop(0)
+    
     def peek(self):
         if not self.is_empty():
             return self.items[-1]

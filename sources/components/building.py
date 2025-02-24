@@ -15,7 +15,7 @@ class building:
         self.__lift = lift(0, False, 1, self.__capacity)
         self.__createFloors()
         # self.__createPeople()
-        self.__numPeople = self.getNumPeople()
+        self.__numPeople = self.getTotalPeople()
 
     def getTotalPeople(self) -> int:
         '''

@@ -63,21 +63,22 @@ def read_input_file(filename):
 max_floors, lift_capacity, requests = read_input_file('sources/input_files/input0.txt')
 # Create building class
 Building = building(max_floors, lift_capacity, requests)
-def mainloop(algorithm):
-    Lift = Building.getLift()
-     # While the lift is not at the top floor
-    while Lift.get_current_floor() <= max_floors:
-        floor
-        total_seek, sequence = algorithm(requests, Lift.get_current_floor(), Lift.get_move(), 1)
-        print(f"Total seek operations: {total_seek}")
-        print("Seek sequence:", sequence)
-        # For each floor in the sequence
-        for floor in sequence:
-            # For each person on the current floor
-            for person in requests[floor]:
-                # Add the person to the lift
-                Lift.add_person()
-                print(person)
+Lift = Building.getLift()
 
-if __name__ == "__main__":
-    mainloop(scan_algorithm_real_time)
+def main_loop():
+    while Lift.get_current_floor() <= max_floors:
+        total_seek, sequence = scan_algorithm_real_time(requests, Lift.get_current_floor(), Lift.get_move(), max_floors)
+        for target_floor in sequence:
+            Lift.change_current_floor(target_floor)
+            
+            # Handle people getting on and off
+            floor_obj = Building.getFloor(target_floor)
+            people_waiting = floor_obj.GetPeople()
+            print(people_waiting)
+            print(requests)
+            for person in people_waiting[:]:  # Copy list to avoid modifying while iterating
+                if Lift.get_num_people() < lift_capacity:
+                    Lift.add_people(person)
+                    floor_obj.RemoveFromPeople(person)
+
+main_loop()

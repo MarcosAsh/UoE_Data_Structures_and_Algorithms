@@ -21,8 +21,8 @@ def scan_algorithm_real_time(requests, head, direction, one_floor_moving_time):
     return: Tuple containing the total seek operations and the sequence of visited floors.
     """
     seek_count = 0
-    left = Stack()
-    right = Stack()
+    left = stack()
+    right = stack()
     seek_sequence = []
     
     while requests or not left.is_empty() or not right.is_empty():

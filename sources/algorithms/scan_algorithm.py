@@ -25,9 +25,10 @@ def scan_algorithm_real_time(requests, head, lift, one_floor_moving_time):
     right = stack()
     seek_sequence = []
     direction = lift.get_move()
-    
-    while requests or not left.is_empty() or not right.is_empty():
-        for req in requests:
+    request_queue = requests[:] 
+
+    while request_queue or not left.is_empty() or not right.is_empty():
+        for req in request_queue:
             # Handle nested requests (lists inside the requests list)
             if isinstance(req, list):
                 for sub_req in req:
@@ -43,9 +44,8 @@ def scan_algorithm_real_time(requests, head, lift, one_floor_moving_time):
         
         # Sort the stacks
         left.items = quicksort(left.items)
-        right.items = quicksort(right.items)
-        requests.clear()
-        
+        right.items = quicksort(right.items)     
+
         if direction == -1 and not left.is_empty():
             while not left.is_empty():
                 current_track = left.pop()
@@ -55,7 +55,8 @@ def scan_algorithm_real_time(requests, head, lift, one_floor_moving_time):
             lift.move_up()
         elif direction == 1 and not right.is_empty():
             while not right.is_empty():
-                current_track = right.pop(0)  
+                print(right.items)
+                current_track = right.pop()  
                 seek_sequence.append(current_track)
                 seek_count += abs(head - current_track)
                 head = current_track

@@ -64,10 +64,14 @@ max_floors, lift_capacity, requests = read_input_file('sources/input_files/input
 # Create building class
 Building = building(max_floors, lift_capacity, requests)
 Lift = Building.getLift()
-
+print(Lift.get_current_floor())
+print(requests)
+time.sleep(5)
 def main_loop():
     while Lift.get_current_floor() <= max_floors:
-        total_seek, sequence = scan_algorithm_real_time(requests, Lift.get_current_floor(), Lift.get_move(), max_floors)
+        total_seek, sequence = scan_algorithm_real_time(requests, Lift.get_current_floor(), Lift.get_move(), 0.1)
+        print(f'Total Seek operations: {total_seek}')
+        print(f'Sequence: {sequence}')
         for target_floor in sequence:
             Lift.change_current_floor(target_floor)
             

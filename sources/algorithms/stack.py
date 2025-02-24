@@ -14,6 +14,7 @@ class stack:
     def pop_first(self):
         if not self.is_empty():
             return self.items.pop(0)
+        return None
     
     def peek(self):
         if not self.is_empty():

@@ -59,6 +59,7 @@ class lift:
         '''
         self.__capacity += 1
         self.peopleList.append(request)
+        self.__num_people += 1
 
     def get_num_people(self) -> int:
         '''

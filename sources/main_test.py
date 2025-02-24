@@ -61,28 +61,36 @@ def read_input_file(filename):
 
 # Assign variables from input file
 max_floors, lift_capacity, requests = read_input_file('sources/input_files/input0.txt')
-# Create building class
+# Reverse Requests list
+requests = requests[::-1]
+# Create building object
 Building = building(max_floors, lift_capacity, requests)
+# Create Lift object
 Lift = Building.getLift()
-print(Lift.get_current_floor())
-print(requests)
-time.sleep(5)
+
+
 def main_loop():
-    while Lift.get_current_floor() <= max_floors:
-        total_seek, sequence = scan_algorithm_real_time(requests, Lift.get_current_floor(), Lift.get_move(), 0.1)
-        print(f'Total Seek operations: {total_seek}')
-        print(f'Sequence: {sequence}')
-        for target_floor in sequence:
-            Lift.change_current_floor(target_floor)
+    current_requests = []
+    # ensures the lift is within bounds
+    while Lift.get_current_floor() < max_floors:
+        # Lift starts by moving up
+        Lift.move_up()
+        # Check how much space is in the lift
+        vacancy = lift_capacity - Lift.get_num_people()
+        # A loop that only takes the requests of people that can fit in the lift
+        for req in range(vacancy):
+            # adds requests to an updating requests list to simulate people getting on
+            current_requests.append(requests[Lift.get_current_floor()][req])
+        seek_count, seek_sequence = scan_algorithm_real_time(current_requests, Lift.get_current_floor(), Lift, 0.1)
+        print(seek_sequence)
             
-            # Handle people getting on and off
-            floor_obj = Building.getFloor(target_floor)
-            people_waiting = floor_obj.GetPeople()
-            print(people_waiting)
-            print(requests)
-            for person in people_waiting[:]:  # Copy list to avoid modifying while iterating
-                if Lift.get_num_people() < lift_capacity:
-                    Lift.add_people(person)
-                    floor_obj.RemoveFromPeople(person)
+        #     # Handle people getting on and off
+        #     floor_obj = Building.getFloor(target_floor)
+        #     people_waiting = floor_obj.GetPeople()
+        #     for person in people_waiting[:]:  # Copy list to avoid modifying while iterating
+        #         if Lift.get_num_people() < lift_capacity:
+        #             Lift.add_people(person)
+        #             floor_obj.RemoveFromPeople(person)
+    
 
 main_loop()

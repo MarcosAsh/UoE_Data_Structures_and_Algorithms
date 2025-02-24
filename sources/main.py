@@ -55,7 +55,7 @@ def update_gui():
 
 def main_loop():
     while True:
-        total_seek, sequence = scan_algorithm_real_time(requests, Lift.get_current_floor(), Lift.get_move(), max_floors)
+        total_seek, sequence = scan_algorithm_real_time(requests, Lift.get_current_floor(), Lift.get_move(), 0.1)
         for target_floor in sequence:
             Lift.change_current_floor(target_floor)
             update_gui()

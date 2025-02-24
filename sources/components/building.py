@@ -17,7 +17,7 @@ class building:
         # self.__createPeople()
         self.__numPeople = self.getNumPeople()
 
-    def getNumPeople(self) -> int:
+    def getTotalPeople(self) -> int:
         '''
         Returns the total number of people
         '''

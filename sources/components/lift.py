@@ -60,6 +60,15 @@ class lift:
         self.__capacity += 1
         self.peopleList.append(request)
         self.__num_people += 1
+    
+    def remove_people(self,request) -> None:
+        '''
+        remove a person from the lift - 1
+        '''
+        self.__capacity -= 1
+        self.peopleList.remove(request)
+        self.__num_people -= 1
+    
 
     def get_num_people(self) -> int:
         '''

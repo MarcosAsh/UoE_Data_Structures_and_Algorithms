@@ -9,10 +9,6 @@ class stack:
     def pop(self):
         if not self.is_empty():
             return self.items.pop()  # Removes last item (LIFO)
-
-    def pop_first(self):  
-        if not self.is_empty():
-            return self.items.pop(0)  # Removes first item (FIFO)
     
     def peek(self):
         if not self.is_empty():

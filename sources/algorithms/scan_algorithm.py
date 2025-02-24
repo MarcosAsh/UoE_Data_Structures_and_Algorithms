@@ -63,13 +63,3 @@ def scan_algorithm_real_time(requests, head, direction, one_floor_moving_time):
     
     return seek_count, seek_sequence
 
-# Test code
-if __name__ == "__main__":
-    requests = [176, 79, 34, 60, 92, 11, 41, 114]
-    head = 50
-    direction = -1
-    one_floor_moving_time = 0.1  # Example real-time simulation
-
-    total_seek, sequence = scan_algorithm_real_time(requests, head, direction, one_floor_moving_time)
-    print(f"Total seek operations: {total_seek}")
-    print("Seek sequence:", sequence)

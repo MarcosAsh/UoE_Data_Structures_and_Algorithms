@@ -44,6 +44,7 @@ def read_input_file(filename):
 max_floors, lift_capacity, requests = read_input_file('sources/input_files/input0.txt') # File for simulation
 Building = building(max_floors, lift_capacity, requests)
 Lift = Building.getLift()
+print(requests)
 
 # GUI Class
 def update_gui():
@@ -55,7 +56,8 @@ def update_gui():
 
 def main_loop():
     while True:
-        total_seek, sequence = scan_algorithm_real_time(requests, Lift.get_current_floor(), Lift.get_move(), 0.1)
+        total_seek, sequence = scan_algorithm_real_time(requests, Lift.get_current_floor(), Lift, 0.1)
+        print(sequence)
         for target_floor in sequence:
             Lift.change_current_floor(target_floor)
             update_gui()

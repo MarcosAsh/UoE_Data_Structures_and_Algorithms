@@ -12,7 +12,7 @@ def quicksort(arr):
     right = [x for x in arr if x > pivot]
     return quicksort(left) + middle + quicksort(right)
 
-def scan_algorithm_real_time(requests, head, direction, one_floor_moving_time):
+def scan_algorithm_real_time(requests, head, lift, one_floor_moving_time):
     """
     requests: List of requested floors.
     head: Current floor of the lift.
@@ -24,6 +24,7 @@ def scan_algorithm_real_time(requests, head, direction, one_floor_moving_time):
     left = stack()
     right = stack()
     seek_sequence = []
+    direction = lift.get_move()
     
     while requests or not left.is_empty() or not right.is_empty():
         for req in requests:
@@ -51,14 +52,14 @@ def scan_algorithm_real_time(requests, head, direction, one_floor_moving_time):
                 seek_sequence.append(current_track)
                 seek_count += abs(head - current_track)
                 head = current_track
-            direction = 1
+            lift.move_up()
         elif direction == 1 and not right.is_empty():
             while not right.is_empty():
-                current_track = right.pop_first()  # Use the custom pop_first method
+                current_track = right.pop(0)  
                 seek_sequence.append(current_track)
                 seek_count += abs(head - current_track)
                 head = current_track
-            direction = -1
+            lift.move_down()
         time.sleep(one_floor_moving_time)
     
     return seek_count, seek_sequence

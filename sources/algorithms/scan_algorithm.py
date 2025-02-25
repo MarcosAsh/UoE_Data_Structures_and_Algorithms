@@ -24,6 +24,7 @@ def scan_algorithm_real_time(requests, head, lift, one_floor_moving_time):
     left = Stack()
     right = Stack()
     seek_sequence = []
+    
     # Get the initial direction of the lift
     direction = lift.get_move()  
     request_queue = []
@@ -46,21 +47,28 @@ def scan_algorithm_real_time(requests, head, lift, one_floor_moving_time):
     left.items = quicksort(left.items)
     right.items = quicksort(right.items)
 
+    # If the head is equal to one of the requested floors, visit it immediately
+    if head in request_queue:
+        seek_sequence.append(head)
+        request_queue.remove(head)
+    
     while left.size() > 0 or right.size() > 0:
         if direction == -1 and left.size() > 0:
             while left.size() > 0:
                 current_track = left.pop()
-                seek_sequence.append(current_track)
-                seek_count += abs(head - current_track)
-                head = current_track
+                if current_track not in seek_sequence:
+                    seek_sequence.append(current_track)
+                    seek_count += abs(head - current_track)
+                    head = current_track
             direction = 1  # Change direction to up for the next iteration
 
         elif direction == 1 and right.size() > 0:
             while right.size() > 0:
                 current_track = right.pop()
-                seek_sequence.append(current_track)
-                seek_count += abs(head - current_track)
-                head = current_track
+                if current_track not in seek_sequence:
+                    seek_sequence.append(current_track)
+                    seek_count += abs(head - current_track)
+                    head = current_track
             direction = -1  # Change direction to down for the next iteration
 
         # Simulate lift movement time between floors

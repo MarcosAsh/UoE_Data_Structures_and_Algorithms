@@ -75,7 +75,6 @@ def main_loop():
     # Get the requests for the current floor
     for req in requests[Lift.get_current_floor()]:
         # Add the people to the lift
-        Lift.peopleList.append(req)
         Lift.add_people(req)
         # Clear the requests list of people that have been added to the lift
         requests[Lift.get_current_floor()] = []

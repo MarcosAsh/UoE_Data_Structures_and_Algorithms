@@ -88,7 +88,7 @@ def measure_time_complexity():
         lift = building(num_floors, lift_capacity, requests).getLift()
         
         start = time.time()
-        scan_algorithm_real_time(requests, lift.get_current_floor(), lift.get_move(), num_floors)
+        scan_algorithm_real_time(requests, lift.get_current_floor(), lift, num_floors)
         scan_times.append(time.time() - start)
         
         start = time.time()

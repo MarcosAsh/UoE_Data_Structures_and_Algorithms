@@ -69,28 +69,69 @@ Building = building(max_floors, lift_capacity, requests)
 Lift = Building.getLift()
 
 
+# main loop
 def main_loop():
-    current_requests = []
+    """Main loop for the simulation."""
+    # Get the requests for the current floor
+    for req in requests[Lift.get_current_floor()]:
+        # Add the people to the lift
+        Lift.peopleList.append(req)
+        Lift.add_people(req)
+        # Clear the requests list of people that have been added to the lift
+        requests[Lift.get_current_floor()] = []
+        
+    # Get seek count and seek sequence
+    seek_count, seek_sequence = scan_algorithm_real_time(Lift.peopleList, Lift.get_current_floor(), Lift, 0.1)
+    print('current floor:', Lift.get_current_floor())
+    print('seek count:', seek_count)
+    print('seek sequence:', seek_sequence)
+    print('requests in lift:', Lift.peopleList)
+
+
     # ensures the lift is within bounds
-    while Lift.get_current_floor() < max_floors:
-        # Lift starts by moving up
-        Lift.move_up()
-        # Check how much space is in the lift
-        vacancy = lift_capacity - Lift.get_num_people()
-        # A loop that only takes the requests of people that can fit in the lift
-        for req in range(vacancy):
-            # adds requests to an updating requests list to simulate people getting on
-            current_requests.append(requests[Lift.get_current_floor()][req])
-        seek_count, seek_sequence = scan_algorithm_real_time(current_requests, Lift.get_current_floor(), Lift, 0.1)
-        print(seek_sequence)
-            
-        #     # Handle people getting on and off
-        #     floor_obj = Building.getFloor(target_floor)
-        #     people_waiting = floor_obj.GetPeople()
-        #     for person in people_waiting[:]:  # Copy list to avoid modifying while iterating
-        #         if Lift.get_num_people() < lift_capacity:
-        #             Lift.add_people(person)
-        #             floor_obj.RemoveFromPeople(person)
-    
+    for floor in seek_sequence:
+        # get current floor
+        Lift.change_current_floor(floor)
+        # If the lift can move up
+        if Lift.get_current_floor() < floor:
+            # Lift starts by moving up
+            Lift.move_up()
+            #  check if there are people that want to get off on the floor
+            for person in Lift.peopleList:
+                if person == Lift.get_current_floor():
+                    # remove the person from the current jobs list and remove the person from the lift
+                    Lift.remove_people(person)
+        
+            # If there are no requests on the current floor, continue to the next floor
+            if len(requests[Lift.get_current_floor()]) == 0:
+                continue
+            # Check how much space is in the lift
+            vacancy = lift_capacity - Lift.get_num_people()
+
+            # If the lift is full, only add the amount of people that can fit in the lift
+            if vacancy < len(requests[Lift.get_current_floor()]):
+                for req in range(vacancy):
+                    # adds each person and there request to the lift
+                    Lift.add_people(requests[Lift.get_current_floor()][req])
+                # removes the people that were added to the lift from the requests list
+                requests[Lift.get_current_floor()] = requests[Lift.get_current_floor()][vacancy:]
+
+            # If the lift is not full, add all the requests to the lift
+            else:
+                for req in requests[Lift.get_current_floor()]:
+                    Lift.peopleList.append(req)
+                    Lift.add_people(req)
+                # Clear the requests list of people that have been added to the lift
+                requests[Lift.get_current_floor()] = []
+
+            # Get seek count and seek sequence   
+            seek_count, seek_sequence = scan_algorithm_real_time(Lift.peopleList, Lift.get_current_floor(), Lift, 0.1)
+            print('current floor:', Lift.get_current_floor())
+            print('seek count:', seek_count)
+            print('seek sequence:', seek_sequence)
+            # Move the lift to the next floor
+            # Lift.change_current_floor(Lift.get_current_floor() + 1)
+
+
 
 main_loop()

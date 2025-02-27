@@ -24,21 +24,16 @@ def mylift(Building):
     requests_pointer = []
     next_request_up = 0
     next_request_down = 0
+    requests_pointer = []
 
+    
+    # Initialize requests_pointer with 0s for each floor
     for i in range(num_floors):
         if Building.get_floor(i).GetNumPeople() > 0:
             requests_pointer.append(1)
         else:
             requests_pointer.append(0)
 
-    requests_pointer = []
-
-    # Initialize requests_pointer with 0s for each floor
-    for i in range(Building.get_num_floors()):
-        if Building.get_floor(i).GetNumPeople() > 0:
-            requests_pointer.append(1)
-        else:
-            requests_pointer.append(0)
 
     while Building.get_remaining_people() > 0:
         up_count = 0

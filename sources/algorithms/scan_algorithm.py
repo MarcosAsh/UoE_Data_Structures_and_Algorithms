@@ -1,14 +1,13 @@
 import time
 import sys
-import os
-import threading
+import os, sys
 
 # Add the directory containing the components module to the Python path
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from data_structures.stack import Stack
-from quicksort_algorithm import quicksort
+from algorithms.quicksort_algorithm import quicksort
 from components.building import building
 
 

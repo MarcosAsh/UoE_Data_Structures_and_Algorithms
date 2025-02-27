@@ -2,18 +2,14 @@ import time, sys, os
 import matplotlib
 import matplotlib.pyplot as plt
 
-
-
-
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-
-
-
 from algorithms.scan_algorithm import scan_algorithm
-from algorithms.look_algorithm import look_algorithm
+#from algorithms.look_algorithm import look_algorithm
 from algorithms.read_input_file_algorithm import read_input_file
 from components.building import building
+
+
 
 
 def measure_time_complexity():
@@ -28,7 +24,8 @@ def measure_time_complexity():
       
        # Measure SCAN algorithm time
        start = time.time()
-       scan_algorithm(requests, 0, 1, num_floors)
+       flat_requests = [floor for sublist in requests for floor in sublist] if requests and isinstance(requests[0], list) else requests
+       scan_algorithm(flat_requests, 0, 1, num_floors)
        scan_times.append(time.time() - start)
        """
        # Measure LOOK algorithm time

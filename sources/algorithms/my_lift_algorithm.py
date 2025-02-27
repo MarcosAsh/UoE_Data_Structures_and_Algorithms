@@ -18,18 +18,23 @@ Building = building(num_floors, lift_capacity, requests)
 def mylift(Building):
     Lift = Building.get_lift()
     remaining_people = Building.get_remaining_people()
-    num_floors = building.__building__numOfFloors 
+    print(remaining_people)
+    num_floors = Building.get_num_floors() 
 
-    all_requests = []
+    requests_pointer = []
 
     for i in range(num_floors):
-        all_requests.extend(building.get_floor(i).GetPeople())
-
+        print(Building.get_floor(i).GetNumPeople())
+        if Building.get_floor(i).GetNumPeople() > 0:
+            requests_pointer.append(1)
+        else:
+            requests_pointer.append(0)
+            
     while remaining_people > 0:
         # Get the current floor of the lift
         current_floor = Lift.get_current_floor()
         # Get the next closest request  
-        print(all_requests)
+        print(requests_pointer)
 
 
 if __name__ == '__main__':

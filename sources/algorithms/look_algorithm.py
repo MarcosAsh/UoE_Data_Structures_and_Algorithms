@@ -1,5 +1,14 @@
+import sys
+import os
+
+# Add the directory containing the components module to the Python path
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 import time
 from quicksort_algorithm import quicksort
+from components.building import building
+from read_input_file_algorithm import read_input_file
 
 # Quick Sort for LOOK algorithm
 def quicksort(arr):
@@ -15,6 +24,7 @@ def look_algorithm(building):
     current_floor = 0
     direction = 1
     lift = building.getLift()
+    print(building.getRemainingPeople())
     remaining_people = building.getRemainingPeople()
     while remaining_people:
         print(f"Current floor is {current_floor}")
@@ -69,10 +79,6 @@ def look_algorithm(building):
 
 # Test code
 if __name__ == "__main__":
-    requests = [0, 5, 3, 7, 9, 2]
-    floors = 10
-    current_floor = 0
-    direction = 1  # 1 for up, -1 for down
-
-    final_floor = look_algorithm_real_time(requests, current_floor, direction, 0.1)
-    print(f"Final Floor: {final_floor}")
+    floorNim, capacity, requests = read_input_file("sources/input_files/input0.txt")
+    testBuilding = building(floorNim, capacity, requests)
+    look_algorithm(testBuilding)

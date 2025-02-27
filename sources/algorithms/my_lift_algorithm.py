@@ -2,10 +2,12 @@ import sys
 import os
 
 # Add the directory containing the components module to the Python path
-sys.path.append(os.path.join(os.path.dirname(__file__), 'sources/components'))
 
-from main import read_input_file
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from components.building import building
+from read_input_file_algorithm import read_input_file
+
 
 # Read the input file
 num_floors, lift_capacity, requests = read_input_file('sources/input_files/input0.txt')

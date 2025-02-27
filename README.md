@@ -3,34 +3,32 @@ This lift implementation uses a GUI to visualise the lifts movements across a ra
 
 ## File Structure
 ```
+.
 ├── sources/
 │   ├── algorithms/
 │   │   ├── __init__.py
 │   │   ├── look_algorithm.py
-│   │   ├── scan_algorithm.py
-│   │   └── stack.py
+│   │   ├── my_lift_algorithm.py
+│   │   ├── quicksort_algorithm.py
+│   │   ├── read_input_file.py
+│   │   └── scan_algorithm.py
 │   ├── components/
 │   │   ├── __init__.py
 │   │   ├── building.py
 │   │   ├── floor.py
 │   │   └── lift.py
+│   ├── data structures/
+│   │   ├── __init__.py
+│   │   ├── queue.py
+│   │   └── stack.py
 │   ├── input_files/
 │   │   └── input_.txt * 300
-│   ├── generate_input.py
-│   └── main.py
+│   └── generate_input.py
+├── .gitignore
 └── README.md
 ```
 
 ## Usage
-```python
-import main
-
-main.main_loop()
-```
-
-Select the start simulation button located at the top of the screen on the GUI to run the algorithms.
-
-Select the time complexity button located under the start button to visualise the time complexity.
 
 ## Licence
 MIT License

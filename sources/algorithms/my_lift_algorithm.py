@@ -26,7 +26,6 @@ def mylift(Building):
     next_request_down = 0
 
     for i in range(num_floors):
-        print(Building.get_floor(i - 1).GetNumPeople())
         if Building.get_floor(i).GetNumPeople() > 0:
             requests_pointer.append(1)
         else:
@@ -37,49 +36,76 @@ def mylift(Building):
     # Initialize requests_pointer with 0s for each floor
     for i in range(Building.get_num_floors()):
         if Building.get_floor(i).GetNumPeople() > 0:
-            requests_pointer.append([1])
+            requests_pointer.append(1)
         else:
-            requests_pointer.append([0])
+            requests_pointer.append(0)
 
-    while remaining_people > 0:
+    while Building.get_remaining_people() > 0:
         up_count = 0
         down_count = 0
-        # Get the current floor of the lift
-        current_floor = Lift.get_current_floor()
         # Get the next closest request
-        for floor in range(current_floor, len(requests_pointer)):
-            up_count += 1
-            if requests_pointer[floor][0] == 1:
+        for floor in range(Lift.get_current_floor(), num_floors):
+            if requests_pointer[floor] == 1:
                 next_request_up = floor
                 break
-        for floor in range(current_floor, -1, -1):
-            down_count += 1
-            if requests_pointer[floor][0] == 1:
-                next_request_down = floor
+            up_count += 1
+        for floor in range(Lift.get_current_floor(),-1, -1):
+            
+            if requests_pointer[floor] == 1:
+                next_request_down = floor 
                 break
-        
+            down_count += 1
+
+
         # Move the lift to the next closest request
         if up_count < down_count:
             Lift.move_up()
             Lift.change_current_floor(next_request_up)
-        else:
+            requests_pointer[next_request_up] = 0
+        if down_count < up_count:
             Lift.move_down()
             Lift.change_current_floor(next_request_down)
-        
+            requests_pointer[next_request_down] = 0
+        else:
+            if Lift.get_move() == 1:
+                Lift.change_current_floor(next_request_up)
+                requests_pointer[next_request_up] = 0
+            else:
+                Lift.change_current_floor(next_request_down)
+                requests_pointer[next_request_down] = 0
+
         # add floor to seek sequence
         seek_sequence.append(Lift.get_current_floor())
 
         # get the vacancy of the lift
         vacancy = Lift.get_capacity() - Lift.get_num_people()
 
-        for i in range(vacancy):
-            # add people to the lift
-            Lift.add_people(Building.get_floor(current_floor).peek())
-            # remove people from the floor
-            Building.get_floor(current_floor).RemoveFromPeople()
+        # remove people from the lift if they are on the current floor
+        for person in Lift.peopleList:
+            if person == Lift.get_current_floor():
+                Lift.remove_people(person)
 
+        # Adding people onto the lift if capacity allows
+        while Lift.get_num_people() < Lift.get_capacity():
+            person = Building.get_floor(Lift.get_current_floor()).RemoveFromPeople()
+            # Making sure the item is not added if the queue has nothing in it and returns None
+            if person is None:
+                break
+            else:
+                # add people to the lift
+                Lift.add_people(person)
+                print(f"Added {person} to lift. Capacity: {Lift.get_num_people()}")
+                # print people on the floor
+                print(Building.get_floor(Lift.get_current_floor()).GetPeople())
+                # print people in the lift
+                print(Lift.peopleList)
+                # print remaining people in the building
+                print(Building.get_remaining_people())
+                print(requests_pointer)
+ 
+    return seek_sequence
 
 
 if __name__ == '__main__':
-    mylift(Building)
+    print(mylift(Building))
     

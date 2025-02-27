@@ -72,9 +72,9 @@ def main_loop_RealTime():
     currentFloor = Building.getFloor(Lift.get_current_floor())
     for req in currentFloor.GetPeople():
         # Add the people to the lift
-        Lift.add_people(req)
-        # Removes the person from the floor
-        currentFloor.RemoveFromPeople(req)
+        if Lift.add_people(req):
+            # Removes the person from the floor
+            currentFloor.RemoveFromPeople(req)
         
     # Get seek count and seek sequence using the scan algorithm
     seek_count, seek_sequence = scan_algorithm_real_time(Lift.peopleList, Lift.get_current_floor(), Lift, 0.1)

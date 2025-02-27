@@ -53,12 +53,16 @@ class lift:
         '''
         return self.__current_floor
     
-    def add_people(self,request) -> None:
+    def add_people(self,request) -> bool:
         '''
         add a person to the lift + 1
         '''
-        self.peopleList.append(request)
-        self.__num_people += 1
+        if self.__num_people >= self.__capacity:
+            return False
+        else:
+            self.peopleList.append(request)
+            self.__num_people += 1
+            return True
     
     def remove_people(self,request) -> None:
         '''

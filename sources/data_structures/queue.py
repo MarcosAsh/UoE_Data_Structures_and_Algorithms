@@ -23,8 +23,7 @@ class queue:
         Removes and returns the element at the front pointer.
         '''
         if len(self.__this_queue) > 0:
-            item = self.__this_queue.pop(self.FRONTPOINTER) # removes the element at the head of the queue
-            return item
+            return self.__this_queue.pop(self.FRONTPOINTER) # removes the element at the head of the queue
         else:
             return None #returns None if the queue is empty
         
@@ -32,8 +31,8 @@ class queue:
         '''
         Returns the front element of the queue. Returns false if the queue is empty.
         '''
-        if len(self.__this_queue > 0):
-            return self.__this_queue[self.FRONTPOINTER] #returns the element at the head of the queue
+        if len(self.__this_queue) > 0:
+            return self.__this_queue[self.FRONTPOINTER]
         else:
             return False #returns false if the queue is empty
         

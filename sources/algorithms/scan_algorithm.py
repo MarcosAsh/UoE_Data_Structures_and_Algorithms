@@ -13,70 +13,61 @@ def quicksort(arr):
 
 def scan_algorithm_real_time(requests, head, lift, one_floor_moving_time):
     """
-    SCAN Algorithm with real-time updates.
-    
     requests: List of requested floors.
     head: Current floor of the lift.
-    lift: Lift object that handles movement.
+    lift: Lift object that handles the movement.
     one_floor_moving_time: Time to move one floor.
-    
-    Returns:
-        seek_count: Total movement count.
-        seek_sequence: The order of floors visited.
+    return: Tuple containing the total seek operations and the sequence of visited floors.
     """
-    
+
     seek_count = 0
     seek_sequence = []
+    left = []
+    right = []
     
-    direction = lift.get_move()  # Initial direction (1 = up, -1 = down)
+    direction = lift.get_move()  # Initial direction of movement (1 for up, -1 for down)
     
-    # Flatten all requests into a single list
+    # Flatten requests into a single list
     request_queue = []
     for req in requests:
         if isinstance(req, list):
             request_queue.extend(req)
         else:
             request_queue.append(req)
-    
-    # If no requests, return early
-    if not request_queue:
-        return 0, []
 
-    # Split requests into "left" (below head) and "right" (above head)
-    left = sorted([req for req in request_queue if req < head], reverse=True)  # Going down
-    right = sorted([req for req in request_queue if req > head])  # Going up
+    for req in request_queue:
+        if req < head:
+            left.append(req)
+        elif req > head:
+            right.append(req)
+
+    # Sort each half
+    left = quicksort(left)[::-1]  # down
+    right = quicksort(right)       # up
 
     while left or right:
-        if direction == 1 and right:  # Moving UP
+        if direction == 1 and right:  # Going up
             while right:
                 next_floor = right.pop(0)
                 if next_floor not in seek_sequence:
                     seek_sequence.append(next_floor)
                     seek_count += abs(head - next_floor)
                     head = next_floor
-            # Switch direction when the highest request is reached
-            if left:
-                direction = -1
+            direction = -1  # Change direction to down after reaching the highest request
 
-        elif direction == -1 and left:  # Moving DOWN
+        elif direction == -1 and left:  # Going down
             while left:
                 next_floor = left.pop(0)
                 if next_floor not in seek_sequence:
                     seek_sequence.append(next_floor)
                     seek_count += abs(head - next_floor)
                     head = next_floor
-            # Switch direction when the lowest request is reached
-            if right:
-                direction = 1
+            direction = 1  # Change direction to UP after reaching the lowest request
+        
+        else:
+            direction *= -1
 
-        # Ensure the lift keeps running while requests exist
-        if not left and not right:
-            remaining_requests = [req for req in requests if req not in seek_sequence]
-            if remaining_requests:
-                left = sorted([req for req in remaining_requests if req < head], reverse=True)
-                right = sorted([req for req in remaining_requests if req > head])
-
-        # Simulate movement time
+        # Simulate lift movement time between floors
         time.sleep(one_floor_moving_time)
 
     return seek_count, seek_sequence

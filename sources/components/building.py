@@ -33,7 +33,7 @@ class building:
         '''
         num_people = 0
         for i in range(len(self.__floors)):
-            f = self.getFloor(i)
+            f = self.get_floor(i)
             num_people += f.GetNumPeople()
         return num_people
     

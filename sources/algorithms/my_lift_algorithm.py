@@ -16,7 +16,7 @@ Building = building(num_floors, lift_capacity, requests)
 
 # Algorithm that moves the lift to the next closest request and can move up or down
 def mylift(Building):
-    Lift = Building.getLift()
+    Lift = Building.get_lift()
     remaining_people = Building.get_remaining_people()
     num_floors = building.__building__numOfFloors 
 
@@ -28,7 +28,7 @@ def mylift(Building):
     while remaining_people > 0:
         # Get the current floor of the lift
         current_floor = Lift.get_current_floor()
-        # Get the next closest request
+        # Get the next closest request  
         print(all_requests)
 
 

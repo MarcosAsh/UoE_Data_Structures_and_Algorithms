@@ -6,36 +6,36 @@ class queue:
         else:
             self.__length = length #custom length if given
         self.__this_queue = this_list
-        self.rear_pointer = len(this_list)-1
+        self.rear_pointer = len(this_list)-1 #sets rear pointer to the current last element
     
     def enqueue(self,e) -> bool:
         '''
         Adds an element to that back of the queue. Returns true if the element is added, false if the queue is full.
         '''
-        if len(self.__this_queue) < self.__length:
+        if len(self.__this_queue) < self.__length: #adds an element and returns true if possible
             self.__this_queue.append(e)
             return True
         else:
-            return False
+            return False #returns false if queue is full
     
     def dequeue(self) -> any:
         '''
         Removes and returns the element at the front pointer.
         '''
         if len(self.__this_queue) > 0:
-            item = self.__this_queue.pop(self.FRONTPOINTER)
+            item = self.__this_queue.pop(self.FRONTPOINTER) # removes the element at the head of the queue
             return item
         else:
-            return None
+            return None #returns None if the queue is empty
         
     def peek(self) -> any:
         '''
         Returns the front element of the queue. Returns false if the queue is empty.
         '''
         if len(self.__this_queue > 0):
-            return self.__this_queue[self.FRONTPOINTER]
+            return self.__this_queue[self.FRONTPOINTER] #returns the element at the head of the queue
         else:
-            return False
+            return False #returns false if the queue is empty
         
     def get_length(self) -> int:
         '''

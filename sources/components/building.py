@@ -8,36 +8,37 @@ class building:
         '''
         Creates building. (int floorsNum, 2dArray requests)
         '''
-        self.__numOfFloors = floorsNum
+        self.__num_of_floors = floorsNum
         self.__requests = requests
         self.__floors = []
         self.__capacity = capacity
         self.__lift = lift(0, False, 1, self.__capacity)
-        self.__createFloors()
-        self.__createPeople()
-        self.__numPeople = self.__getTotalPeople()
+        self.__create_floors()
+        self.__create_people()
 
-    def __getTotalPeople(self) -> int:
+        self.__num_people = 0
+        for floor in self.__requests:
+            self.__numPeople += len(floor)
+        self.__num_people
+
+    def get_total_people(self) -> int:
         '''
         Returns the total number of people
         '''
-        numPeople = 0
-        for floor in self.__requests:
-            numPeople += len(floor)
-        return numPeople
+        return self.__num_people
     
-    def getRemainingPeople(self) -> int:
+    def get_remaining_people(self) -> int:
         '''
         Iterates through each floor and totals up the number of people remaining
         '''
-        numPeople = 0
+        num_people = 0
         for i in range(len(self.__floors)):
             f = self.getFloor(i)
-            numPeople += f.GetNumPeople()
-        return numPeople
+            num_people += f.GetNumPeople()
+        return num_people
     
 
-    def __createPeople(self) -> None:
+    def __create_people(self) -> None:
          '''
          Creates people and distributes them to their floors.
          '''
@@ -49,21 +50,27 @@ class building:
                  newPerson = j
                  currentFloor.AddToPeople(newPerson)
 
-    def __createFloors(self) -> None:
+    def __create_floors(self) -> None:
         '''
         Creates the floors and adds to the floors list.
         '''
-        for i in range(self.__numOfFloors):
+        for i in range(self.__num_of_floors):
             self.__floors.append(floor(i))
 
-    def getFloor(self,i) -> floor:
+    def get_floor(self,i) -> floor:
         '''
         Returns a floor instance given its index.
         '''
         return self.__floors[i]
 
-    def getLift(self):
+    def get_lift(self):
         '''
         Returns the lift
         '''
         return self.__lift
+    
+    def get_num_floors(self) -> int:
+        '''
+        Returns the number of floors in the building
+        '''
+        return self.__num_of_floors

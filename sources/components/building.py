@@ -34,7 +34,7 @@ class building:
         rem_people = 0
         for i in range(len(self.__floors)):
             f = self.get_floor(i)
-            num_people += f.GetNumPeople()
+            rem_people += f.GetNumPeople()
         return rem_people
     
 

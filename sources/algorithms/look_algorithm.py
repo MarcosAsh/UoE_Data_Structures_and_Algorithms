@@ -36,11 +36,11 @@ def look_algorithm(building):
                 print(f"    Removed {person} from lift. Capacity: {lift.get_num_people()}")
 
         # Adding people onto the lift if capacity allows
-        for person in building.get_floor(current_floor).get_people():
-            if lift.add_people(person) == False:
-                break
-            else:
-                print(f"    Added {person} to lift. Capacity: {lift.get_num_people()}")
+        floor_queue = building.get_floor(current_floor).GetPeople()
+        while lift.get_num_people() <= lift.get_capacity():
+            person = floor_queue.dequeue()
+            lift.add_people(person)
+            print(f"    Added {person} to lift. Capacity: {lift.get_num_people()}")
                     
         # Finding the next request or call (if capacity allows) in the current direction
         # Sort the requests in the elevator that are along the current direction
@@ -55,7 +55,7 @@ def look_algorithm(building):
             if not lift.get_num_people() <= lift.get_capacity():
                 # Check for calls in between the current floor and the next request
                 for i in range(current_floor, next_requests[0] + 1):
-                    if building.get_floor(i).get_people():
+                    if building.get_floor(i).GetPeople():
                         next_request = i
                         print(f"    New call found at {next_request}")
                         break
@@ -69,7 +69,7 @@ def look_algorithm(building):
             if not lift.get_num_people() <= lift.get_capacity():
                 # Check for calls in between the current floor and the next request
                 for i in range(next_requests[-1] + 1, current_floor, -1):
-                    if building.getFloor(i).get_people():
+                    if building.getFloor(i).GetPeople():
                         next_request = i
                         print(f"    New call found at {next_request}")
                         break

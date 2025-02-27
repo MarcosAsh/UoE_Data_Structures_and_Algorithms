@@ -44,7 +44,7 @@ class building:
          '''
          # iterate over the indices of self.__requests
          for i in range(len(self.__requests)):
-             currentFloor = self.getFloor(i)
+             currentFloor = self.get_floor(i)
              # iterate over the requests for the current floor
              for j in self.__requests[i]:
                  newPerson = j

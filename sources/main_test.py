@@ -115,7 +115,7 @@ def main_loop_RealTime():
             for req in range(vacancy):
                 Lift.add_people(currentFloor.getPeople()[req])
             # Removes the people that were added to the lift from the requests list
-            currentFloor.getPeople() = currentFloor.getPeople()[vacancy:]
+            currentFloor.setPeople(currentFloor.getPeople()[vacancy:])
 
         # If the lift is not full, add all the requests to the lift
         else:

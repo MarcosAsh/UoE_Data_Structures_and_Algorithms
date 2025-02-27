@@ -37,6 +37,12 @@ class floor:
         """
         return self.__people_list
     
+    def setPeople(self,peopleList) -> None:
+        '''
+        Sets people list.
+        '''
+        self.__people_list = peopleList
+    
     def __SetNumberOfPeople(self) -> None:
         """
         Sets the number of people on the floor to the number of people classes in the list

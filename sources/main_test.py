@@ -74,7 +74,7 @@ def main_loop_RealTime():
         # Add the people to the lift
         Lift.add_people(req)
         # Clear the requests list of people that have been added to the lift
-        currentFloor.getPeople() = []
+        currentFloor.setPeople([])
         
     # Get seek count and seek sequence using the scan algorithm
     seek_count, seek_sequence = scan_algorithm_real_time(Lift.peopleList, Lift.get_current_floor(), Lift, 0.1)

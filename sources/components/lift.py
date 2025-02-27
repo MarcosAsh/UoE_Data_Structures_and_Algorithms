@@ -77,6 +77,12 @@ class lift:
         return the number of people in the lift
         '''
         return self.__num_people
+    
+    def get_capacity(self):
+        '''
+        return capacity
+        '''
+        return self.__capacity
 
     def __str__(self) -> str:
         return self.name

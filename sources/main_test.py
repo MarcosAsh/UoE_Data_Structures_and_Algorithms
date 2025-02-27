@@ -135,99 +135,12 @@ def main_loop_RealTime():
 
 
 
-# ************************ Main Loop taking requests once at the start ************************
-
-def main_loop():
-    if Lift.get_move() == 1:
-        seek_count, seek_sequence = scan_algorithm_real_time(requests, Lift.get_current_floor(), Lift, 0.1)
-        seek_sequence = seek_sequence[::-1]
-        print(f"Seek count: {seek_count}")
-        print(f"Seek sequence: {seek_sequence}")
-        for target_floor in seek_sequence:
-            Lift.change_current_floor(target_floor)
-            print(f"Moving to floor {target_floor}...")
-            time.sleep(1)
-            #  Check if there are people that want to get off at the current floor
-            for person in Lift.peopleList:
-                if person == Lift.get_current_floor():
-                    Lift.remove_people(person)
-            # If there are no requests on the current floor, continue to the next floor
-            if len(requests[Lift.get_current_floor()]) == 0:
-                print(f"No requests on floor {Lift.get_current_floor()}")  # Debug statement
-                continue
-            #   Check how much space is in the lift
-            vacancy = lift_capacity - Lift.get_num_people()
-
-            # If the lift is full, only add the amount of people that can fit in the lift
-            if vacancy < len(requests[Lift.get_current_floor()]):
-                for req in range(vacancy):
-                    Lift.add_people(requests[Lift.get_current_floor()][req])
-                # Removes the people that were added to the lift from the requests list
-                requests[Lift.get_current_floor()] = requests[Lift.get_current_floor()][vacancy:]
-
-            # If the lift is not full, add all the requests to the lift
-            else:
-                for req in requests[Lift.get_current_floor()]:
-                    Lift.add_people(req)
-                # Clear the requests list of people that have been added to the lift
-                requests[Lift.get_current_floor()] = []
-            # print people in lift
-            print(f"Requests in lift: {Lift.peopleList}")
-            # print the remaining requests
-            print(f"Remaining requests: {requests}")
-
-            if Lift.get_current_floor() == max_floors:
-                Lift.move_down()
-
-
-    elif Lift.get_move() == -1:
-        seek_count, seek_sequence = scan_algorithm_real_time(requests, Lift.get_current_floor(), Lift, 0.1)
-        seek_sequence = seek_sequence[::-1]
-        print(f"Seek count: {seek_count}")
-        print(f"Seek sequence: {seek_sequence}")
-        for target_floor in seek_sequence:
-            Lift.change_current_floor(target_floor)
-            print(f"Moving to floor {target_floor}...")
-            time.sleep(1)
-            #  Check if there are people that want to get off at the current floor
-            for person in Lift.peopleList:
-                if person == Lift.get_current_floor():
-                    Lift.remove_people(person)
-            # If there are no requests on the current floor, continue to the next floor
-            if len(requests[Lift.get_current_floor()]) == 0:
-                print(f"No requests on floor {Lift.get_current_floor()}")  # Debug statement
-                continue
-            #   Check how much space is in the lift
-            vacancy = lift_capacity - Lift.get_num_people()
-
-            # If the lift is full, only add the amount of people that can fit in the lift
-            if vacancy < len(requests[Lift.get_current_floor()]):
-                for req in range(vacancy):
-                    Lift.add_people(requests[Lift.get_current_floor()][req])
-                # Removes the people that were added to the lift from the requests list
-                requests[Lift.get_current_floor()] = requests[Lift.get_current_floor()][vacancy:]
-
-            # If the lift is not full, add all the requests to the lift
-            else:
-                for req in requests[Lift.get_current_floor()]:
-                    Lift.add_people(req)
-                # Clear the requests list of people that have been added to the lift
-                requests[Lift.get_current_floor()] = []
-            # print people in lift
-            print(f"Requests in lift: {Lift.peopleList}")
-            # print the remaining requests
-            print(f"Remaining requests: {requests}")
-
-            if Lift.get_current_floor() == 0:
-                Lift.move_up()
-
-
 
 
 # Run the main loop until all requests are processed
 while any(requests):
     print(f"Starting new loop with current floor: {Lift.get_current_floor()}")
-    main_loop()
+    main_loop_RealTime()
 
 # Once the loop is done, print the final status
 print("All requests processed.")

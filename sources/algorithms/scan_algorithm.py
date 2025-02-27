@@ -1,5 +1,4 @@
 import time
-import threading
 from stack import Stack
 
 def quicksort(arr):

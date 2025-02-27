@@ -1,8 +1,16 @@
 import time
+import sys
+import os
 import threading
-from stack import Stack
+
+# Add the directory containing the components module to the Python path
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+from data_structures.stack import Stack
 from quicksort_algorithm import quicksort
 from components.building import building
+
 
 
 def scan_algorithm(requests, head, direction, num_floors):

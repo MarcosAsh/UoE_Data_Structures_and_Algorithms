@@ -1,7 +1,7 @@
 class queue:
     FRONTPOINTER = 0 #static constant
     def __init__(self,this_list,length = -1):
-        if length == -1 or length > len(this_list): #length defaults to the length of the current list
+        if length == -1 or length < len(this_list): #length defaults to the length of the current list
             self.__length = len(this_list)
         else:
             self.__length = length #custom length if given

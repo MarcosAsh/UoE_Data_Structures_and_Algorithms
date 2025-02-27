@@ -18,7 +18,7 @@ class building:
 
         self.__num_people = 0
         for floor in self.__requests:
-            self.__numPeople += len(floor)
+            self.__num_people += len(floor)
         self.__num_people
 
     def get_total_people(self) -> int:

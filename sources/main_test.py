@@ -139,7 +139,7 @@ def main_loop_RealTime():
 
 
 # Run the main loop until all requests are processed
-while Building.getRemainingPeople() >= 0:
+while Building.getRemainingPeople() + Lift.get_num_people() >= 0:
     print(f"Starting new loop with current floor: {Lift.get_current_floor()}")
     main_loop_RealTime()
 

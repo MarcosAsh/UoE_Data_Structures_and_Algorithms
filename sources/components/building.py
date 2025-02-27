@@ -27,6 +27,9 @@ class building:
         return numPeople
     
     def getRemainingPeople(self) -> int:
+        '''
+        Iterates through each floor and totals up the number of people remaining
+        '''
         numPeople = 0
         for i in range(len(self.__floors)):
             f = self.getFloor(i)

@@ -6,7 +6,7 @@ def generate_input(folder_name):
         # make file name sequentially and put into input_files folder
         file_name = os.path.join(folder_name, f"input{floornum}.txt")
         # defines the number of floors and the capacity
-        num_floors = random.randint(3, 30)
+        num_floors = random.randint(2, 30)
         capacity = 8
 
         # creates/overwrites if exists

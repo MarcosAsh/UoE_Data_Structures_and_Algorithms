@@ -1,5 +1,6 @@
 import time
 import threading
+from stack import Stack
 
 def quicksort(arr):
     if len(arr) <= 1:
@@ -10,56 +11,67 @@ def quicksort(arr):
     right = [x for x in arr if x > pivot]
     return quicksort(left) + middle + quicksort(right)
 
-def scan_algorithm_real_time(requests, head, direction, one_floor_moving_time):
+
+def scan_algorithm_real_time(requests, head, lift, one_floor_moving_time):
     """
     requests: List of requested floors.
     head: Current floor of the lift.
-    direction: Initial direction of movement ('1' for up or '-1' for down).
-    max_floor: The highest floor in the building.
+    lift: Lift object that handles the movement.
+    one_floor_moving_time: Time to move one floor.
     return: Tuple containing the total seek operations and the sequence of visited floors.
     """
     seek_count = 0
-    left = []
-    right = []
+    left = Stack()
+    right = Stack()
     seek_sequence = []
     
-    while requests or left or right:
-        for floor in requests:
-            for req in floor:
-                if req < head:
-                    left.append(req)
-                elif req > head:
-                    right.append(req)
-        
-        left = quicksort(left)
-        right = quicksort(right)
-        requests.clear()
-        
-        if direction == -1 and left:
-            while left:
-                current_track = left.pop()
-                seek_sequence.append(current_track)
-                seek_count += abs(head - current_track)
-                head = current_track
-            direction = 1
-        elif direction == 1 and right:
-            while right:
-                current_track = right.pop(0)
-                seek_sequence.append(current_track)
-                seek_count += abs(head - current_track)
-                head = current_track
-            direction = -1
-        time.sleep(one_floor_moving_time)  # Simulate real-time movement
+    # Get the initial direction of the lift
+    direction = lift.get_move()  
+    request_queue = []
+
+    # Flatten requests (if there are any nested lists)
+    for req in requests:
+        if isinstance(req, list):
+            request_queue.extend(req)
+        else:
+            request_queue.append(req)
+
+    # Partition requests into left and right stacks based on the initial head position
+    for req in request_queue:
+        if req < head:
+            left.push(req)
+        elif req > head:
+            right.push(req)
+
+    # Sort the stacks only once
+    left.items = quicksort(left.items)
+    right.items = quicksort(right.items)
+
+    # If the head is equal to one of the requested floors, visit it immediately
+    if head in request_queue:
+        seek_sequence.append(head)
+        request_queue.remove(head)
     
+    while left.size() > 0 or right.size() > 0:
+        if direction == -1 and left.size() > 0:
+            while left.size() > 0:
+                current_track = left.pop()
+                if current_track not in seek_sequence:
+                    seek_sequence.append(current_track)
+                    seek_count += abs(head - current_track)
+                    head = current_track
+            direction = 1  # Change direction to up for the next iteration
+
+        elif direction == 1 and right.size() > 0:
+            while right.size() > 0:
+                current_track = right.pop()
+                if current_track not in seek_sequence:
+                    seek_sequence.append(current_track)
+                    seek_count += abs(head - current_track)
+                    head = current_track
+            direction = -1  # Change direction to down for the next iteration
+
+        # Simulate lift movement time between floors
+        time.sleep(one_floor_moving_time)
+
     return seek_count, seek_sequence
-
-# test code
-if __name__ == "__main__":
-    requests = [176, 79, 34, 60, 92, 11, 41, 114]
-    head = 50
-    direction = -1
-    max_floor = 200
-
-    total_seek, sequence = scan_algorithm_real_time(requests, head, direction)
-    print(f"Total seek operations: {total_seek}")
-    print("Seek sequence:", sequence)

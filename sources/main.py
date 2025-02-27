@@ -44,6 +44,7 @@ def read_input_file(filename):
 max_floors, lift_capacity, requests = read_input_file('sources/input_files/input0.txt') # File for simulation
 Building = building(max_floors, lift_capacity, requests)
 Lift = Building.getLift()
+print(requests)
 
 # GUI Class
 def update_gui():
@@ -55,7 +56,8 @@ def update_gui():
 
 def main_loop():
     while True:
-        total_seek, sequence = scan_algorithm_real_time(requests, Lift.get_current_floor(), Lift.get_move(), max_floors)
+        total_seek, sequence = scan_algorithm_real_time(requests, Lift.get_current_floor(), Lift, 0.1)
+        print(sequence)
         for target_floor in sequence:
             Lift.change_current_floor(target_floor)
             update_gui()
@@ -86,7 +88,7 @@ def measure_time_complexity():
         lift = building(num_floors, lift_capacity, requests).getLift()
         
         start = time.time()
-        scan_algorithm_real_time(requests, lift.get_current_floor(), lift.get_move(), num_floors)
+        scan_algorithm_real_time(requests, lift.get_current_floor(), lift, num_floors)
         scan_times.append(time.time() - start)
         
         start = time.time()

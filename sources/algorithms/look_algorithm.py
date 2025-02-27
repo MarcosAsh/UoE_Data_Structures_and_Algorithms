@@ -53,8 +53,8 @@ def look_algorithm_real_time(requests, current_floor, direction, one_floor_movin
 if __name__ == "__main__":
     requests = [0, 5, 3, 7, 9, 2]
     floors = 10
-    current_floor = 50
+    current_floor = 0
     direction = 1  # 1 for up, -1 for down
 
-    final_floor = look_algorithm_real_time(requests, current_floor, direction)
+    final_floor = look_algorithm_real_time(requests, current_floor, direction, 0.1)
     print(f"Final Floor: {final_floor}")

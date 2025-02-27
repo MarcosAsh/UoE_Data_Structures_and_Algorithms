@@ -15,16 +15,17 @@ class building:
         self.__lift = lift(0, False, 1, self.__capacity)
         self.__create_floors()
         self.__create_people()
-        self.num_people = self.__getTotalPeople()
 
-    def __get_total_people(self) -> int:
+        self.__num_people = 0
+        for floor in self.__requests:
+            self.__numPeople += len(floor)
+        self.__num_people
+
+    def get_total_people(self) -> int:
         '''
         Returns the total number of people
         '''
-        num_people = 0
-        for floor in self.__requests:
-            numPeople += len(floor)
-        return num_people
+        return self.__num_people
     
     def get_remaining_people(self) -> int:
         '''

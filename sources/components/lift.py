@@ -65,7 +65,6 @@ class lift:
         '''
         remove a person from the lift - 1
         '''
-        self.__capacity -= 1
         self.peopleList.remove(request)
         self.__num_people -= 1
     

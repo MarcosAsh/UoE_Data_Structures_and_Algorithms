@@ -70,11 +70,11 @@ def main_loop_RealTime():
     """Main loop for the simulation."""
     # Get the requests for the current floor
     currentFloor = Building.getFloor(Lift.get_current_floor())
-    for req in currentFloor.getPeople():
+    for req in currentFloor.GetPeople():
         # Add the people to the lift
         Lift.add_people(req)
         # Clear the requests list of people that have been added to the lift
-        currentFloor.setPeople([])
+        currentFloor.SetPeople([])
         
     # Get seek count and seek sequence using the scan algorithm
     seek_count, seek_sequence = scan_algorithm_real_time(Lift.peopleList, Lift.get_current_floor(), Lift, 0.1)
@@ -103,7 +103,7 @@ def main_loop_RealTime():
                 Lift.remove_people(person)
         
         # If there are no requests on the current floor, continue to the next floor
-        if len(currentFloor.getPeople()) == 0:
+        if len(currentFloor.GetPeople()) == 0:
             print(f"No requests on floor {Lift.get_current_floor()}")  # Debug statement
             continue
         
@@ -111,18 +111,18 @@ def main_loop_RealTime():
         vacancy = lift_capacity - Lift.get_num_people()
 
         # If the lift is full, only add the amount of people that can fit in the lift
-        if vacancy < len(currentFloor.getPeople()):
+        if vacancy < len(currentFloor.GetPeople()):
             for req in range(vacancy):
-                Lift.add_people(currentFloor.getPeople()[req])
+                Lift.add_people(currentFloor.GetPeople()[req])
             # Removes the people that were added to the lift from the requests list
-            currentFloor.setPeople(currentFloor.getPeople()[vacancy:])
+            currentFloor.SetPeople(currentFloor.GetPeople()[vacancy:])
 
         # If the lift is not full, add all the requests to the lift
         else:
-            for req in currentFloor.getPeople():
+            for req in currentFloor.GetPeople():
                 Lift.add_people(req)
             # Clear the requests list of people that have been added to the lift
-            currentFloor.getPeople() = []
+            currentFloor.SetPeople([])
 
         # Re-run the scan algorithm to get the new seek count and sequence after handling current requests
         seek_count, seek_sequence = scan_algorithm_real_time(Lift.peopleList, Lift.get_current_floor(), Lift, 0.1)

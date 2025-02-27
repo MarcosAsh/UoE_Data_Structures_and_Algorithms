@@ -37,7 +37,7 @@ class floor:
         """
         return self.__people_list
     
-    def setPeople(self,peopleList) -> None:
+    def SetPeople(self,peopleList) -> None:
         '''
         Sets people list.
         '''

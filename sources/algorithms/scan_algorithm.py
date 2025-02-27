@@ -95,3 +95,22 @@ def scan_algorithm_loop(building):
         num_times_loop_completed += 1
         # print number of times loop completed
         print(f"number of times loop completed: {num_times_loop_completed}")
+
+def test_scan_algorithm_basic():
+	requests = [2, 5, 8, 1, 7]
+	head = 3
+	direction = 1  # Moving up
+	num_floors = 10
+    
+	sequence = scan_algorithm(requests, head, direction, num_floors)
+    
+	print("SCAN Algorithm Test")
+	print("Initial Floor:", head)
+	print("Floor Requests:", requests)
+	print("Visit Sequence:")
+	for floor in sequence:
+          print(f"Elevator stopping at floor {floor}")
+    
+# Run the basic test
+if __name__ == "__main__":
+	test_scan_algorithm_basic()

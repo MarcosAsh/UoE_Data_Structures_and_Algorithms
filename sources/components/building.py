@@ -27,10 +27,12 @@ class building:
         return numPeople
     
     def getRemainingPeople(self) -> int:
-        return self.__numPeople
+        numPeople = 0
+        for i in range(len(self.__floors)):
+            f = self.getFloor(i)
+            numPeople += f.GetNumPeople()
+        return numPeople
     
-    def removePerson(self) -> None:
-        self.__numPeople -= 1
 
     def __createPeople(self) -> None:
          '''

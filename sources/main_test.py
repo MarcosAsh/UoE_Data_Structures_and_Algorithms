@@ -101,7 +101,6 @@ def main_loop_RealTime():
         for person in Lift.peopleList:
             if person == Lift.get_current_floor():
                 Lift.remove_people(person)
-                Building.removePerson()
         
         # If there are no requests on the current floor, continue to the next floor
         if len(currentFloor.GetPeople()) == 0:

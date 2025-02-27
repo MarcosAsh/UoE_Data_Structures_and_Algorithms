@@ -1,5 +1,4 @@
 import time
-import threading
 
 # Quick Sort for LOOK algorithm
 def quicksort(arr):

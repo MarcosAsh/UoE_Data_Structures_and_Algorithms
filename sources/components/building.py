@@ -31,11 +31,11 @@ class building:
         '''
         Iterates through each floor and totals up the number of people remaining
         '''
-        num_people = 0
+        rem_people = 0
         for i in range(len(self.__floors)):
             f = self.get_floor(i)
             num_people += f.GetNumPeople()
-        return num_people
+        return rem_people
     
 
     def __create_people(self) -> None:

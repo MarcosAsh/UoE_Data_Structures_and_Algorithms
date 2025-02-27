@@ -15,9 +15,9 @@ class building:
         self.__lift = lift(0, False, 1, self.__capacity)
         self.__createFloors()
         self.__createPeople()
-        self.__numPeople = self.getTotalPeople()
+        self.__numPeople = self.__getTotalPeople()
 
-    def getTotalPeople(self) -> int:
+    def __getTotalPeople(self) -> int:
         '''
         Returns the total number of people
         '''
@@ -25,6 +25,12 @@ class building:
         for floor in self.__requests:
             numPeople += len(floor)
         return numPeople
+    
+    def getRemainingPeople(self) -> int:
+        return self.__numPeople
+    
+    def removePerson(self) -> None:
+        self.__numPeople -= 1
 
     def __createPeople(self) -> None:
          '''

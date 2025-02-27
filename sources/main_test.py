@@ -101,6 +101,7 @@ def main_loop_RealTime():
         for person in Lift.peopleList:
             if person == Lift.get_current_floor():
                 Lift.remove_people(person)
+                Building.removePerson()
         
         # If there are no requests on the current floor, continue to the next floor
         if len(currentFloor.GetPeople()) == 0:
@@ -132,14 +133,14 @@ def main_loop_RealTime():
         print('seek sequence:', seek_sequence)
 
         # Simulate the lift's movement
-        print(f"Remaining requests: {requests}")
+        print(f"Remaining requests: {Building.getRemainingPeople()}")
 
 
 
 
 
 # Run the main loop until all requests are processed
-while any(requests):
+while building.getRemainingPeople() != 0:
     print(f"Starting new loop with current floor: {Lift.get_current_floor()}")
     main_loop_RealTime()
 

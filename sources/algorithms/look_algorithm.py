@@ -26,6 +26,7 @@ def look_algorithm(building):
     lift = building.get_lift()
     print(building.get_remaining_people())
     remaining_people = building.get_remaining_people()
+
     while remaining_people:
         print(f"Current floor is {current_floor}")
         # Removing people from the lift
@@ -54,7 +55,7 @@ def look_algorithm(building):
             if not lift.get_num_people() <= lift.get_capacity():
                 # Check for calls in between the current floor and the next request
                 for i in range(current_floor, next_requests[0] + 1):
-                    if building.get_floor(i).get_people:
+                    if building.get_floor(i).get_people():
                         next_request = i
                         print(f"    New call found at {next_request}")
                         break
@@ -68,7 +69,7 @@ def look_algorithm(building):
             if not lift.get_num_people() <= lift.get_capacity():
                 # Check for calls in between the current floor and the next request
                 for i in range(next_requests[-1] + 1, current_floor, -1):
-                    if building.getFloor(i).get_people:
+                    if building.getFloor(i).get_people():
                         next_request = i
                         print(f"    New call found at {next_request}")
                         break

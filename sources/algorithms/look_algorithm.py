@@ -23,9 +23,9 @@ def quicksort(arr):
 def look_algorithm(building):
     current_floor = 0
     direction = 1
-    lift = building.getLift()
-    print(building.getRemainingPeople())
-    remaining_people = building.getRemainingPeople()
+    lift = building.get_lift()
+    print(building.get_remaining_people())
+    remaining_people = building.get_remaining_people()
     while remaining_people:
         print(f"Current floor is {current_floor}")
         # Removing people from the lift
@@ -35,7 +35,7 @@ def look_algorithm(building):
                 print(f"    Removed {person} from lift. Capacity: {lift.get_num_people()}")
 
         # Adding people onto the lift if capacity allows
-        for person in building.getFloor(current_floor).getPeople():
+        for person in building.get_floor(current_floor).get_people():
             if lift.add_people(person) == False:
                 break
             else:
@@ -43,9 +43,9 @@ def look_algorithm(building):
                     
         # Finding the next request or call (if capacity allows) in the current direction
         # Sort the requests in the elevator that are along the current direction
-        print(f"    People in lift: {lift.peopleList}, Current direction: {direction}")
+        print(f"    People in lift: {lift.people_list}, Current direction: {direction}")
         if direction == 1:
-            next_requests = [req for req in lift.peopleList if req >= current_floor]
+            next_requests = [req for req in lift.people_list if req >= current_floor]
             next_requests = quicksort(next_requests)
             
             # Select the closest request
@@ -54,12 +54,12 @@ def look_algorithm(building):
             if not lift.get_num_people() <= lift.get_capacity():
                 # Check for calls in between the current floor and the next request
                 for i in range(current_floor, next_requests[0] + 1):
-                    if building.getFloor(i).getPeople:
+                    if building.get_floor(i).get_people:
                         next_request = i
                         print(f"    New call found at {next_request}")
                         break
         if direction == -1:
-            next_requests = [req for req in lift.peopleList if req <= current_floor]
+            next_requests = [req for req in lift.people_list if req <= current_floor]
             next_requests = quicksort(next_requests)
             
             # Select the closest request
@@ -68,7 +68,7 @@ def look_algorithm(building):
             if not lift.get_num_people() <= lift.get_capacity():
                 # Check for calls in between the current floor and the next request
                 for i in range(next_requests[-1] + 1, current_floor, -1):
-                    if building.getFloor(i).getPeople:
+                    if building.getFloor(i).get_people:
                         next_request = i
                         print(f"    New call found at {next_request}")
                         break
@@ -80,5 +80,6 @@ def look_algorithm(building):
 # Test code
 if __name__ == "__main__":
     floorNim, capacity, requests = read_input_file("sources/input_files/input0.txt")
+    print(f"{floorNim} {capacity} {requests}")
     testBuilding = building(floorNim, capacity, requests)
     look_algorithm(testBuilding)

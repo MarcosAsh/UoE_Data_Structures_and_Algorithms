@@ -1,7 +1,7 @@
 # building components
 
-from floor import *
-from lift import *
+from components.floor import *
+from components.lift import *
 
 class building:
     def __init__(self,floorsNum,capacity,requests):

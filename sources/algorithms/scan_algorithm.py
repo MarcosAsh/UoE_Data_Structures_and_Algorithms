@@ -1,73 +1,89 @@
 import time
+import threading
 from stack import Stack
+from quicksort_algorithm import quicksort
 from components.building import building
 
-def quicksort(arr):
-    if len(arr) <= 1:
-        return arr
-    pivot = arr[len(arr) // 2]
-    left = [x for x in arr if x < pivot]
-    middle = [x for x in arr if x == pivot]
-    right = [x for x in arr if x > pivot]
-    return quicksort(left) + middle + quicksort(right)
 
-def scan_algorithm_real_time(requests, head, lift, one_floor_moving_time,maxFloor):
+def scan_algorithm(requests, head, direction, num_floors):
     """
-    requests: List of requested floors.
-    head: Current floor of the lift.
-    lift: Lift object that handles the movement.
-    one_floor_moving_time: Time to move one floor.
-    return: Tuple containing the total seek operations and the sequence of visited floors.
+    SCAN algorithm for elevator movement
+    requests: list of floor requests
+    head: current position of elevator
+    direction: movement of lift 1 for up -1 for down
+    num_floors: total number of floors
+    return: ordered sequence of floor stops
     """
+    # sort requests with quicksort
+    requests = quicksort(requests)
+    # initialise up and down list
+    up_list = [req for req in requests if req >= head]
+    down_list = [req for req in requests if req < head]
 
-    seek_count = 0
-    seek_sequence = []
-    left = []
-    right = []
-    
-    direction = lift.get_move()  # Initial direction of movement (1 for up, -1 for down)
-    
-    # Flatten requests into a single list
-    request_queue = []
-    for req in requests:
-        if isinstance(req, list):
-            request_queue.extend(req)
-        else:
-            request_queue.append(req)
+    # check direction of elevator
+    if direction == 1: 
+        sequence = up_list + down_list[::1]
+    else: 
+        sequence = down_list[::1] + up_list
 
-    for req in request_queue:
-        if req < head:
-            left.append(req)
-        elif req > head:
-            right.append(req)
+    return sequence
 
-    # Sort each half
-    left = quicksort(left)[::-1]  # down
-    right = quicksort(right)       # up
 
-    while left or right:
-        if direction == 1 and right:  # Going up
-            while right:
-                next_floor = right.pop(0)
-                if next_floor not in seek_sequence:
-                    seek_sequence.append(next_floor)
-                    seek_count += abs(head - next_floor)
-                    head = next_floor
-            direction = -1  # Change direction to down after reaching the highest request
+def scan_algorithm_loop(building):
+    """
+    Continuosly runs SCAN algorithm for the elevator simulation
+    building: The building instance containing the lift and floors
+    """
+    # initialising elevator
+    elevator = building.getLift()
+    # accessing the private attribute to get number of floors
+    num_floors = building.__building__numOfFloors 
+    # initialise variable to count how many times the loop has been completed
+    num_times_loop_completed = 0
+    while True:
 
-        elif direction == -1 and left:  # Going down
-            while left:
-                next_floor = left.pop(0)
-                if next_floor not in seek_sequence:
-                    seek_sequence.append(next_floor)
-                    seek_count += abs(head - next_floor)
-                    head = next_floor
-            direction = 1  # Change direction to UP after reaching the lowest request
-        
-        else:
-            direction *= -1
+        # get current floor and get direction from elevator
+        current_floor = elevator.get_current_floor()
+        direction = elevator.get_move()
 
-        # Simulate lift movement time between floors
-        time.sleep(one_floor_moving_time)
+        # get all requests form building floors
+        all_requests = []
+        for i in range(num_floors):
+            all_requests.extend(building.getFloor(i).GetPeople())
 
-    return seek_count, seek_sequence
+        if not all_requests:
+            # make algorithm sleep
+            time.sleep(1)
+            # if no requests keep waiting
+            continue 
+
+        # get scan sequence 
+        sequence = scan_algorithm(all_requests, current_floor, direction, num_floors)
+
+        for floor in sequence:
+            # go to next floor
+            elevator.change_current_floor(floor)
+            # print floor that it moved to
+            print(f"ELevator moved to the floor {floor}")
+
+            # simulate people geting in and out of the elevaator
+            floor_obj = building.getFloor(floor)
+            people_waiting =  floor_obj.GetPeople()
+            # copy list to modift safely
+            for person in people_waiting[:]:
+                if elevator.get_num_people() < elevator._lift__capacity:
+                    elevator.add_people(person)
+                    floor_obj.RemoveFromPeople(person)
+            
+            # simulate elevator movement
+            time.sleep(1)
+
+        # change direction at the end
+        elevator.move_up() if direction == -1 else elevator.move_down()
+
+        time.sleep(1)
+
+        # add 1 to the number of times loop completed as loop has been iterated through once
+        num_times_loop_completed += 1
+        # print number of times loop completed
+        print(f"number of times loop completed: {num_times_loop_completed}")

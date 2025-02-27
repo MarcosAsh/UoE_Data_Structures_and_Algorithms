@@ -57,7 +57,13 @@ class building:
             self.__floors.append(floor(i))
 
     def getFloor(self,i) -> floor:
+        '''
+        Returns a floor instance given its index.
+        '''
         return self.__floors[i]
 
     def getLift(self):
+        '''
+        Returns the lift
+        '''
         return self.__lift

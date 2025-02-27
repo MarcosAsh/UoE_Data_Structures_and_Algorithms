@@ -1,5 +1,6 @@
 import time
 from stack import Stack
+from components.building import building
 
 def quicksort(arr):
     if len(arr) <= 1:
@@ -10,7 +11,7 @@ def quicksort(arr):
     right = [x for x in arr if x > pivot]
     return quicksort(left) + middle + quicksort(right)
 
-def scan_algorithm_real_time(requests, head, lift, one_floor_moving_time):
+def scan_algorithm_real_time(requests, head, lift, one_floor_moving_time,maxFloor):
     """
     requests: List of requested floors.
     head: Current floor of the lift.

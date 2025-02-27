@@ -77,7 +77,7 @@ def main_loop_RealTime():
             currentFloor.RemoveFromPeople(req)
         
     # Get seek count and seek sequence using the scan algorithm
-    seek_count, seek_sequence = scan_algorithm_real_time(Lift.peopleList, Lift.get_current_floor(), Lift, 0.1)
+    seek_count, seek_sequence = scan_algorithm_real_time(Lift.peopleList, Lift.get_current_floor(), Lift, 0.1,max_floors)
     seek_sequence = seek_sequence[::-1]
     print('current floor:', Lift.get_current_floor())
     print('seek count:', seek_count)
@@ -125,7 +125,7 @@ def main_loop_RealTime():
             currentFloor.SetPeople([])
 
         # Re-run the scan algorithm to get the new seek count and sequence after handling current requests
-        seek_count, seek_sequence = scan_algorithm_real_time(Lift.peopleList, Lift.get_current_floor(), Lift, 0.1)
+        seek_count, seek_sequence = scan_algorithm_real_time(Lift.peopleList, Lift.get_current_floor(), Lift, 0.1,max_floors)
         seek_sequence = seek_sequence[::-1]
         print('current floor:', Lift.get_current_floor())
         print('seek count:', seek_count)

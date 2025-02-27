@@ -35,10 +35,10 @@ def read_input_file(filename):
                 if "," in line:
                     try:
                         parts = line.split(",")
-                        if len(parts) != 2 or not parts[0].strip():  
+                        if len(parts) != 2 or not parts[0].strip():  #presence check for num_floors and capacity
                             raise InvalidInputError("Invalid input provided. Line 2 in inputFile.")
                         num_floors, lift_capacity = map(int, line.split(","))
-                    except(ValueError):
+                    except(ValueError): #ensures both are integers
                         raise InvalidInputError(message="Invalid input provided. Line 2 in input file, non-integer value.")
                     requests = [[] for _ in range(num_floors)]  # Initialize a 2D array
                     break

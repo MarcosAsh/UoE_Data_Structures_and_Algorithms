@@ -32,8 +32,8 @@ class queue:
         '''
         Returns the front element of the queue. Returns false if the queue is empty.
         '''
-        if len(self.__this_queue > 0):
-            return self.__this_queue[self.FRONTPOINTER] #returns the element at the head of the queue
+        if len(self.__this_queue) > 0:
+            return self.__this_queue[self.FRONTPOINTER]
         else:
             return False #returns false if the queue is empty
         

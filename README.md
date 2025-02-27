@@ -1,6 +1,26 @@
 # Lift Algorithm Implementation
 This lift implementation uses a GUI to visualise the lifts movements across a range of floors, whilst comparing two competing algorithms on speed and efficiency.
 
+## File Structure
+```
+├── sources/
+│   ├── algorithms/
+│   │   ├── __init__.py
+│   │   ├── look_algorithm.py
+│   │   ├── scan_algorithm.py
+│   │   └── stack.py
+│   ├── components/
+│   │   ├── __init__.py
+│   │   ├── building.py
+│   │   ├── floor.py
+│   │   └── lift.py
+│   ├── input_files/
+│   │   └── input_.txt * 300
+│   ├── generate_input.py
+│   └── main.py
+└── README.md
+```
+
 ## Usage
 ```python
 import main

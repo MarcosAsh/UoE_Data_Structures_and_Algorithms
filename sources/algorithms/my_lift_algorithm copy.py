@@ -1,6 +1,15 @@
 import sys
 import os
-
+"""
+if lift not full:
+	go to nearest floor with request
+	pick up people
+	repeat
+if lift full:
+	go to nearest floor that is requested by someone on lift
+	let everyone who wants that floor off
+	pick up people
+"""
 # Add the directory containing the components module to the Python path
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -25,49 +34,57 @@ def my_lift(Building):
     while Building.get_remaining_people() > 0:
 
         current_floor = Lift.get_current_floor()
-        # Get the next closest request up
-        # Start at floor above current, end at max floor, setting i as index/floor
-        for i in range(current_floor + 1, num_floors):
-            checking_floor = Building.get_floor(i)
-            if checking_floor.GetNumPeople() > 0:
-                next_requested_floor_up = i
-        
-        if next_requested_floor_up > num_floors:
-            next_requested_floor_up = None
 
-        # Get the next closest request down
-        for i in range(current_floor - 1, 0, -1):
-            checking_floor = Building.get_floor(i)
-            if checking_floor.GetNumPeople() > 0:
-                next_requested_floor_down = i
-        
-        if next_requested_floor_down < 0:
-            next_requested_floor_down = None
-        
-        # If both dont exist
-        if next_requested_floor_down is None and next_requested_floor_up is None:
-            # Finished
-            pass
-        # If no down
-        elif next_requested_floor_down is None:
-            # Set target to up
-            pass
-        # If no up
-        elif next_requested_floor_up is None:
-            # Set target to down
-            pass
-        # If up direction is closer
-        elif next_requested_floor_up - current_floor < current_floor - next_requested_floor_down:
-            # Set target as up
-            pass
-        # Else down is closer
+        # If lift is not full
+        if Lift.get_num_people() < lift_capacity:
+            # Get the next closest request up
+            # Start at floor above current, end at max floor, setting i as index/floor
+            for i in range(current_floor + 1, num_floors):
+                checking_floor = Building.get_floor(i)
+                if checking_floor.GetNumPeople() > 0:
+                    next_requested_floor_up = i
+            
+            if next_requested_floor_up > num_floors:
+                next_requested_floor_up = None
+
+            # Get the next closest request down
+            for i in range(current_floor - 1, 0, -1):
+                checking_floor = Building.get_floor(i)
+                if checking_floor.GetNumPeople() > 0:
+                    next_requested_floor_down = i
+            
+            if next_requested_floor_down < 0:
+                next_requested_floor_down = None
+            
+            # If both dont exist
+            if next_requested_floor_down is None and next_requested_floor_up is None:
+                # Finished
+                pass
+            # If no down
+            elif next_requested_floor_down is None:
+                target_floor = next_requested_floor_up
+            # If no up
+            elif next_requested_floor_up is None:
+                target_floor = next_requested_floor_down
+            # If up direction is closer
+            elif next_requested_floor_up - current_floor < current_floor - next_requested_floor_down:
+                target_floor = next_requested_floor_up
+            # Elif down is closer
+            elif next_requested_floor_up - current_floor > current_floor - next_requested_floor_down:
+                target_floor = next_requested_floor_down
+            # Else same
+            else:
+                target_floor = next_requested_floor_up
+        # If lift is full
         else:
-            # Set target to down
-            pass
-
-
-
-
+            for request in Lift.peopleList:
+                if request > current_floor:
+                    pass
+                elif request < current_floor:
+                    pass
+                # Same as current floor
+                else:
+                    pass
         # Move the lift to the next closest request
         if up_count < down_count:
             Lift.move_up()

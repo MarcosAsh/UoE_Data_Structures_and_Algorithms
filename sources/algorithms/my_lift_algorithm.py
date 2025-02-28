@@ -159,7 +159,6 @@ def my_lift(Building):
         if target_floor is not None:
             Lift.change_current_floor(target_floor)
             seek_sequence.append(target_floor)
-            print(next_requested_floor_up, next_requested_floor_down)
             print(f"Lift moving to floor {Lift.get_current_floor()}")
 
     return seek_sequence

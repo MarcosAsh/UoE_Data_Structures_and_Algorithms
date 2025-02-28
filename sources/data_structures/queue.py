@@ -47,6 +47,9 @@ class queue:
         Returns the current number of items in the queue
         '''
         return len(self.__this_queue)
+    
+    def return_queue(self) -> list:
+        return(self.__this_queue)
 
 
 

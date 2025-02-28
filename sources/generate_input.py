@@ -2,9 +2,9 @@ import os, random
 
 def generate_input(folder_name):
     # make 200 files
-    for floornum in range(300):
+    for buildling in range(300):
         # make file name sequentially and put into input_files folder
-        file_name = os.path.join(folder_name, f"input{floornum}.txt")
+        file_name = os.path.join(folder_name, f"input{buildling}.txt")
         # defines the number of floors and the capacity
         num_floors = random.randint(2, 30)
         capacity = 8
@@ -23,7 +23,7 @@ def generate_input(folder_name):
                 # randomises number of requests
                 request_num = random.randint(1, capacity)
                 # creates array with all possible floors (excludes the current floor)
-                choices = [j for j in range(0, num_floors) if j != floornum]
+                choices = [j for j in range(0, num_floors) if j != i]
                 requests = []
                 # adds as many random floors to requests as requests
                 for k in range(request_num):

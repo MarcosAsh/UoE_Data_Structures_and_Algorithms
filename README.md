@@ -23,7 +23,9 @@ This lift implementation uses a GUI to visualise the lifts movements across a ra
 │   │   └── stack.py
 │   ├── input_files/
 │   │   └── input_.txt * 300
-│   └── generate_input.py
+│   ├── generate_input.py
+│   ├── generate_time_complexity_graphy.py
+│   └── main.py
 ├── .gitignore
 └── README.md
 ```

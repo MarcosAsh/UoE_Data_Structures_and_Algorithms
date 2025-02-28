@@ -31,7 +31,7 @@ def my_lift(Building):
     next_requested_floor_up = None
     next_requested_floor_down = None
 
-    while Building.get_remaining_people() > 0:
+    while Building.get_remaining_people() > 0 or Lift.get_num_people() > 0:
 
         current_floor = Lift.get_current_floor()
         target_floor = None
@@ -41,13 +41,10 @@ def my_lift(Building):
             # Get the next closest request up
             # Start at floor above current, end at max floor, setting i as index/floor
             for i in range(current_floor + 1, num_floors):
-                if  Building.get_floor(i).GetPeople().get_count() > 0:
+                if Building.get_floor(i).GetPeople().get_count() > 0:
                     next_requested_floor_up = i
                     break
-            # print('next_requested_floor_up = ', next_requested_floor_up)
             
-            if next_requested_floor_up is not None and next_requested_floor_up >= num_floors - 1:
-                next_requested_floor_up = None
 
             # Get the next closest request down
             for i in range(current_floor -1, -1, -1):
@@ -55,15 +52,13 @@ def my_lift(Building):
                     next_requested_floor_down = i
                     break
             
-            if next_requested_floor_down is not None and next_requested_floor_down <= 0:
-                next_requested_floor_down = None
             
-            # If both dont exist
-            if next_requested_floor_down is None and next_requested_floor_up is None:
-                # Finished
-                pass
+            # # If both dont exist
+            # if next_requested_floor_down is None and next_requested_floor_up is None:
+            #     # Finished
+            #     pass
             # If no down
-            elif next_requested_floor_down is None:
+            if next_requested_floor_down is None:
                 target_floor = next_requested_floor_up
             # If no up
             elif next_requested_floor_up is None:
@@ -82,20 +77,22 @@ def my_lift(Building):
                     target_floor = next_requested_floor_up
 
         # If lift is full
-        elif Lift.get_num_people() == lift_capacity:
+        elif Lift.get_num_people() == lift_capacity or (Building.get_remaining_people() == 0 and Lift.get_num_people() > 0):
             min_distance = 999
             for request in Lift.peopleList:
                 # print(request)
-                if abs(request - current_floor) < min_distance:
+                if abs(request - current_floor) < min_distance or (abs(request - current_floor) == min_distance):
                     min_distance = abs(request - current_floor)
                     print('min_distance = ', min_distance, 'request = ', request)
                     target_floor = request
             
 
-            # Check if the target floor is the current floor
+        # Check if the target floor is the current floor
         if target_floor is not None and target_floor != current_floor:
             Lift.change_current_floor(target_floor)
+            print(next_requested_floor_up, next_requested_floor_down)
             print(f"Lift moving to floor {Lift.get_current_floor()}")
+
 
 
         # remove people from the lift if they are on the current floor
@@ -107,7 +104,6 @@ def my_lift(Building):
         for person in people_to_remove:
             Lift.remove_people(person)
             print(f"Removed {person} from lift. Capacity: {Lift.get_num_people()}")
-
         
 
         # add people onto the lift if capacity allows
@@ -121,11 +117,12 @@ def my_lift(Building):
                 Lift.add_people(person)
                 print(f"Added {person} to lift. Capacity: {Lift.get_num_people()}")
                 # print people on the floor
-                print(Building.get_floor(Lift.get_current_floor()).GetPeople())
+                print('People on the floor after', Building.get_floor(Lift.get_current_floor()).GetPeople().return_queue())
                 # print people in the lift
-                print(Lift.peopleList)
+                print('People in lift:', Lift.peopleList)
                 # print remaining people in the building
-                print(Building.get_remaining_people())
+                print('remaining people in the building: ', Building.get_remaining_people())
+                print('every floor on')
                 # print length of floor queue
                 print('------------------------------------')
     return None

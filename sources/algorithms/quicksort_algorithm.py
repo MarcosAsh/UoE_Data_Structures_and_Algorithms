@@ -1,4 +1,8 @@
 def median_of_three(arr):
+    """
+    Takes an array and finds the median
+    returns the median
+    """
     # Gets first, middle, and last element from list
     first, middle, last = arr[0], arr[len(arr) //2], arr[-1]
 
@@ -13,6 +17,10 @@ def median_of_three(arr):
         return first
 
 def quicksort(arr):
+    """
+    Does a quicksort using the median as the first pivot
+    returns a sorted array
+    """
     # Base case
     if len(arr) <= 1:
         return arr

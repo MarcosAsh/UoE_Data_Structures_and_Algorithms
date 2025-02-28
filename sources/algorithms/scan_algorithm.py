@@ -1,6 +1,6 @@
 import time
 import sys
-import os, sys
+import os
 
 # Add the directory containing the components module to the Python path
 

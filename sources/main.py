@@ -13,50 +13,72 @@ from algorithms.read_input_file_algorithm import read_input_file
 from components.building import building
 
 class LiftSimulationGUI:
+    """
+    GUI for simulating an elevator system using different algorithms
+    """
     def __init__(self, root, building):
+        """
+        Initializes the GUI and its components.
+        """
         self.root = root
         self.building = building
         self.lift = self.building.get_lift()
         self.algorithms = {"SCAN": scan_algorithm, "LOOK": look_algorithm, "MY_LIFT": my_lift}
         self.algorithm = "SCAN"  # Default algorithm
 
+        # Set up the window
         self.root.title("Lift Simulation")
         self.root.geometry("400x700")
 
+        # Set up the window
         self.floor_labels = []
         for i in range(self.building.get_num_floors()):
             label = tk.Label(root, text=f"Floor {i+1}: 0 waiting", width=20, height=2, bg='white', relief="solid")
             label.pack(side="bottom")
             self.floor_labels.append(label)
 
-        self.lift_status = tk.Label(root, text="Lift: 0 people inside", font=("Arial", 12))
+        # Display number of people inside the lift
+        self.lift_status = tk.Label(root, text="Lift: 0 people", font=("Arial", 12))
         self.lift_status.pack()
 
+        # Start button
         self.start_button = tk.Button(root, text="Start Simulation", command=self.start_simulation)
         self.start_button.pack()
 
+        # Algorithm selection button
         self.toggle_algorithm_button = tk.Button(root, text="Change Algorithm", command=self.toggle_algorithm)
         self.toggle_algorithm_button.pack()
 
+        # Display current algorithm
         self.algorithm_label = tk.Label(root, text=f"Current Algorithm: {self.algorithm}")
         self.algorithm_label.pack()
 
     def update_gui(self):
+        """
+        Updates the GUI with the current state of the floors and lift.
+        """
         for i, label in enumerate(self.floor_labels):
             num_waiting = self.building.get_floor(i).GetNumPeople()
             label.config(text=f"Floor {i+1}: {num_waiting} waiting", bg='green' if i == self.lift.get_current_floor() else 'white')
-        self.lift_status.config(text=f"Lift: {self.lift.get_num_people()} people inside")
+        self.lift_status.config(text=f"Lift: {self.lift.get_num_people()} people")
         self.root.update()
 
     def toggle_algorithm(self):
+        """
+        Toggles between available lift algorithms.
+        """
         algo_keys = list(self.algorithms.keys())
         current_index = algo_keys.index(self.algorithm)
         self.algorithm = algo_keys[(current_index + 1) % len(algo_keys)]
         self.algorithm_label.config(text=f"Current Algorithm: {self.algorithm}")
 
     def run_algorithm(self):
+        """
+        Runs the selected lift algorithm and updates the GUI accordingly.
+        """
         selected_algorithm = self.algorithms[self.algorithm]
 
+        # Fetch floor requests if using SCAN otherwise pass the building object
         if self.algorithm == "SCAN":
             all_requests = []
             for i in range(self.building.get_num_floors()):
@@ -65,6 +87,7 @@ class LiftSimulationGUI:
         else:
             sequence = selected_algorithm(self.building)
 
+        # Move the lift according to the computed sequence
         for floor in sequence:
             self.lift.change_current_floor(floor)
             self.update_gui()
@@ -80,11 +103,17 @@ class LiftSimulationGUI:
             time.sleep(1)
 
     def start_simulation(self):
+        """
+        Starts the simulation in a separate thread.
+        """
         threading.Thread(target=self.run_algorithm, daemon=True).start()
 
 if __name__ == "__main__":
+    # Read input file and initialize the building
     num_floors, lift_capacity, requests = read_input_file('sources/input_files/input0.txt')
     sim_building = building(num_floors, lift_capacity, requests)
+
+    # Start the GUI
     root = tk.Tk()
     app = LiftSimulationGUI(root, sim_building)
     root.mainloop()

@@ -15,16 +15,16 @@ if lift full:
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from components.building import building
-from read_input_file_algorithm import read_input_file
-
-
-# Read the input file
-num_floors, lift_capacity, requests = read_input_file('sources/input_files/input0.txt')
-# Create a building object
-Building = building(num_floors, lift_capacity, requests)
+from algorithms.read_input_file_algorithm import read_input_file
 
 # Algorithm that moves the lift to the next closest request and can move up or down
-def my_lift(Building):
+def my_lift(Building, filename):
+
+    # Read the input file
+    num_floors, lift_capacity, requests = read_input_file(filename)
+    # Create a building object
+    Building = building(num_floors, lift_capacity, requests)
+
     Lift = Building.get_lift()
     num_floors = Building.get_num_floors() 
 

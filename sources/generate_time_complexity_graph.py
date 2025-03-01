@@ -37,7 +37,7 @@ def measure_time_complexity():
 
        # Measure MYLIFT algorithm time
        start = time.time()
-       my_lift(test_building, filename)
+       my_lift(filename)
        mylift_times.append(time.time() - start)
        
        num_requests.append(sum(len(floor) for floor in requests))
@@ -48,7 +48,8 @@ def measure_time_complexity():
    plt.scatter(num_requests, look_times, label='LOOK Algorithm', marker='s')
    plt.scatter(num_requests, mylift_times, label='MYLIFT Algorithm', marker='x')
    plt.xlabel('Number of Requests')
-   plt.ylabel('Execution Time (s)')
+   plt.yscale("log")  # Use a logarithmic scale for better visibility
+   plt.ylabel("Execution Time (s) (log scale)")
    plt.title('Time Complexity of SCAN vs LOOK Algorithm vs MYLIFT')
    plt.legend()
    plt.grid()

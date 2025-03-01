@@ -16,6 +16,7 @@ from components.building import building
 def measure_time_complexity():
    scan_times = []
    look_times = []
+   mylift_times = []
    num_requests = []
   
    for i in range(1, 300):  # Simulating 100 input files
@@ -37,7 +38,7 @@ def measure_time_complexity():
        # Measure MYLIFT algorithm time
        start = time.time()
        my_lift(test_building, filename)
-       look_times.append(time.time() - start)
+       mylift_times.append(time.time() - start)
        
        num_requests.append(sum(len(floor) for floor in requests))
   
@@ -45,7 +46,7 @@ def measure_time_complexity():
    plt.figure(figsize=(10, 5))
    plt.scatter(num_requests, scan_times, label='SCAN Algorithm', marker='o')
    plt.scatter(num_requests, look_times, label='LOOK Algorithm', marker='s')
-   plt.scatter(num_requests, look_times, label='MYLIFT Algorithm', marker='g')
+   plt.scatter(num_requests, mylift_times, label='MYLIFT Algorithm', marker='x')
    plt.xlabel('Number of Requests')
    plt.ylabel('Execution Time (s)')
    plt.title('Time Complexity of SCAN vs LOOK Algorithm vs MYLIFT')

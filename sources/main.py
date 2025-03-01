@@ -67,12 +67,13 @@ class LiftSimulationGUI:
         """
         for i, label in enumerate(self.floor_labels):
             num_waiting = self.building.get_floor(i).GetNumPeople()
-            people_waiting = self.building.get_floor(i).GetPeople().return_queue()
-            label.config(text=f"Floor {i+1}: {num_waiting} waiting - {people_waiting}", 
-                         bg='green' if i == self.lift.get_current_floor() else 'white')
+            people_waiting = [str(p) for p in self.building.get_floor(i).GetPeople().return_queue()]  # ✅ Format people correctly
+            label.config(text=f"Floor {i+1}: {num_waiting} waiting - {', '.join(people_waiting)}",
+                        bg='green' if i == self.lift.get_current_floor() else 'white')
 
         self.lift_status.config(text=f"Lift: {self.lift.get_num_people()} people inside")
         self.root.update()
+
 
     def toggle_algorithm(self):
         """
@@ -133,6 +134,7 @@ class LiftSimulationGUI:
         Starts the lift simulation in a separate thread.
         """
         threading.Thread(target=self.run_algorithm, daemon=True).start()
+
 
 if __name__ == "__main__":
     # Read input file and initialize building

@@ -17,13 +17,24 @@ def look_algorithm(building):
     lift = building.get_lift()
     remaining_people = building.get_remaining_people()
 
-    while remaining_people != 0:
-        # print(f"Current floor is {current_floor}")
-        # Removing people from the lift
-        for i in range(len(lift.peopleList) - 1, -1, -1):
-            if lift.peopleList[i] == current_floor:
-                # print(f"    Removed {lift.peopleList[i]} from lift. Capacity: {lift.get_num_people()}")
-                lift.remove_people(lift.peopleList[i])
+    # Remove passengers who have reached their destination
+    people_to_remove = []
+    for person in lift.peopleList[:]:  # Copy list to avoid modifying while iterating
+        if person == current_floor:
+            people_to_remove.append(person)
+
+    for person in people_to_remove:
+        lift.remove_people(person)
+        print(f"Removed {person} from lift at floor {current_floor}")
+
+    while lift.get_num_people() < lift.get_capacity():
+        person = building.get_floor(current_floor).RemoveFromPeople()
+        if person is None:
+            break
+        lift.add_people(person)
+
+        print(f"Floor {current_floor}: Updated waiting list -> {building.get_floor(current_floor).GetPeople().return_queue()}")
+        print(f"Lift now contains: {lift.peopleList}")
 
         # Adding people onto the lift if capacity allows
         while lift.get_num_people() < lift.get_capacity():

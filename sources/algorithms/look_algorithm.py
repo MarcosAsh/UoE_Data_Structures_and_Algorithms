@@ -11,6 +11,7 @@ from components.building import building
 from algorithms.read_input_file_algorithm import read_input_file
 
 def look_algorithm(building):
+    sequence = []
     current_floor = 0
     direction = 1
     lift = building.get_lift()
@@ -120,11 +121,13 @@ def look_algorithm(building):
 
         # Going to that floor
         if moving:
-            # time.sleep(0.2)
+            time.sleep(0.2)
             current_floor = next_request
+            sequence.append(current_floor)
         
         remaining_people = building.get_remaining_people() # Updating the number of people left on the floors incase the loop needs to end
-
+    return sequence
+    
 # Test code
 if __name__ == "__main__":
     floorNim, capacity, requests = read_input_file("sources/input_files/input0.txt")

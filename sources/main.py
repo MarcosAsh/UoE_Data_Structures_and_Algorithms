@@ -82,7 +82,7 @@ class LiftSimulationGUI:
         current_index = algo_keys.index(self.algorithm)
         self.algorithm = algo_keys[(current_index + 1) % len(algo_keys)]
         self.algorithm_label.config(text=f"Current Algorithm: {self.algorithm}")
-
+        
     def run_algorithm(self):
         """
         Runs the selected algorithm and updates the GUI accordingly.
@@ -94,7 +94,7 @@ class LiftSimulationGUI:
 
             elif self.algorithm == "MY_LIFT":
                 sequence = selected_algorithm("sources/input_files/input0.txt")
-                if not sequence:
+                if not sequence:  
                     print(f"Warning: {self.algorithm} returned no sequence.")
                     return
 
@@ -106,6 +106,22 @@ class LiftSimulationGUI:
 
             for floor in sequence:
                 self.lift.change_current_floor(floor)
+
+                people_to_remove = []
+                for person in self.lift.peopleList[:]:  # Copy list to avoid modifying while iterating
+                    if person == floor:
+                        people_to_remove.append(person)
+
+                for person in people_to_remove:
+                    self.lift.remove_people(person)
+
+                floor_obj = self.building.get_floor(floor)
+                while self.lift.get_num_people() < self.lift.get_capacity():
+                    person = floor_obj.RemoveFromPeople()
+                    if person is None:
+                        break  # Stop if no more people are waiting
+                    self.lift.add_people(person)
+
                 self.update_gui()
                 time.sleep(1)
 

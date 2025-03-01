@@ -129,5 +129,7 @@ if __name__ == "__main__":
         app = LiftSimulationGUI(root, sim_building)
         root.mainloop()
 
-    except Exception as e:
+    except TypeError as e:
+        print(f"Error initializing building: {e}")
+    except AttributeError as e:
         print(f"Error initializing building: {e}")

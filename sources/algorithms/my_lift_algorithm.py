@@ -1,15 +1,5 @@
 import sys
 import os
-"""
-if lift not full:
-	go to nearest floor with request
-	pick up people
-	repeat
-if lift full:
-	go to nearest floor that is requested by someone on lift
-	let everyone who wants that floor off
-	pick up people
-"""
 # Add the directory containing the components module to the Python path
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -18,7 +8,18 @@ from components.building import building
 from algorithms.read_input_file_algorithm import read_input_file
 
 # Algorithm that moves the lift to the next closest request and can move up or down
-def my_lift(Building, filename):
+def my_lift(filename) -> list:
+    """
+    if lift not full:
+        go to nearest floor with request
+        pick up people
+        repeat
+    if lift full:
+        go to nearest floor that is requested by someone on lift
+        let everyone who wants that floor off
+        pick up people
+    Returns seek sequence
+    """
 
     # Read the input file
     num_floors, lift_capacity, requests = read_input_file(filename)
@@ -163,5 +164,5 @@ def my_lift(Building, filename):
 
     return seek_sequence
 if __name__ == '__main__':
-    print(f'Seek Sequence: {my_lift(Building)}')
+    print(my_lift('sources/input_files/input0.txt'))
     
